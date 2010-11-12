@@ -1,9 +1,7 @@
 package eu.flatwhite.shiro.spatial;
 
-import java.io.Serializable;
-
 public abstract class AbstractSpatial
-    implements Spatial, Serializable
+    implements Spatial
 {
     private static final long serialVersionUID = 7653768756376754250L;
 
