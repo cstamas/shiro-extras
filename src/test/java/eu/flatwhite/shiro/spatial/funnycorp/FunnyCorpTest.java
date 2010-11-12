@@ -71,7 +71,9 @@ public class FunnyCorpTest
             new SpatialPermission( new Person( meritSpace, "template", null, 10 ), new SphereRelationProvider(),
                 permissions );
 
-        // for checks
+        // for checks, we have to "teleport" from one space to another the person being compared, to
+        // obey the space where the rule's spatial is. Also, employees are in personSpace, that is actuall not a space,
+        // there is no distance defined.
 
         // going in order
         Assert.assertEquals( false, sp1.implies( new SpatialPermission(
