@@ -13,7 +13,7 @@ public class SpatialPermissionTest
 {
     public void testSphere()
     {
-        // set up the space
+        // set up the 3d euclidean space
         EuclideanSpace3d space = new EuclideanSpace3d();
 
         // Problem: define a sphere with radius of 1 in space. Air molecules within that sphere have permission
@@ -54,15 +54,15 @@ public class SpatialPermissionTest
         Assert.assertTrue( permission.implies( inside ) );
         Assert.assertTrue( permission.implies( outside ) );
 
-        // does not touch
+        // point does not touch
         SpatialPermission wrong1 =
             new SpatialPermission( new Point3d( space, 2, 0, 0 ), new SamePointRelationProvider(),
                 new WildcardPermission( "touches" ) );
-        // is not outside
+        // origin is not outside
         SpatialPermission wrong2 =
             new SpatialPermission( space.getOrigin(), new SamePointRelationProvider(), new WildcardPermission(
                 "outside" ) );
-        // is not inside
+        // point is not inside
         SpatialPermission wrong3 =
             new SpatialPermission( new Point3d( space, 2, 2, 2 ), new SamePointRelationProvider(),
                 new WildcardPermission( "inside" ) );
@@ -74,7 +74,8 @@ public class SpatialPermissionTest
 
     public void testPhilippe()
     {
-        // set up the space
+        // set up the space, a node space (this space is not complete euclidean space, you can have two points in space
+        // but with non-defined distance, see NodeSpace implementation)
         NodeSpace space = new NodeSpace();
 
         // my app has following menu structure:
@@ -85,8 +86,8 @@ public class SpatialPermissionTest
         // -- as Text
         // -- as HTML
         //
-        // I am enabling the "as Html" node to a user, hence I want all the "clickable path" be
-        // allowed to user.
+        // I am granting "execute" permission for the "as Html" node to a user, but I want all the "clickable path" (to
+        // get to that node) be implicitly allowed to user also.
 
         Node mEdit = Node.parseString( space, "/edit" );
         Node mEditCut = new Node( mEdit, "Cut" );
@@ -97,6 +98,8 @@ public class SpatialPermissionTest
 
         // granting "execute" permission on mEditPasteAsHtml to some user
         // but I want that user be able to "click the path" down to that menu
+        // in NodeSpace, TOUCHES means same node, INSIDE means node between root and current node (it must be on this
+        // path), OUTSIDE means node below current node. Nodes on different paths are UNRELATED.
         HashMap<Relation, Permission> permissions = new HashMap<Relation, Permission>();
         permissions.put( Relation.TOUCHES, new WildcardPermission( "view,execute" ) );
         permissions.put( Relation.INSIDE, new WildcardPermission( "view" ) );

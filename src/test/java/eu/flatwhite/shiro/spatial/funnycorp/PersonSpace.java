@@ -4,6 +4,12 @@ import eu.flatwhite.shiro.spatial.Space;
 import eu.flatwhite.shiro.spatial.Spatial;
 import eu.flatwhite.shiro.spatial.funnycorp.Person.Gender;
 
+/**
+ * A person "space" that is actually not a space, since all distances are Double.NaN. This class is just used as base
+ * for other spaces that defines how to "measure" the persons.
+ * 
+ * @author cstamas
+ */
 public class PersonSpace
     implements Space
 {

@@ -3,6 +3,11 @@ package eu.flatwhite.shiro.spatial.funnycorp;
 import eu.flatwhite.shiro.spatial.AbstractSpatial;
 import eu.flatwhite.shiro.spatial.Space;
 
+/**
+ * A simple person abstraction.
+ * 
+ * @author cstamas
+ */
 public class Person
     extends AbstractSpatial
 {

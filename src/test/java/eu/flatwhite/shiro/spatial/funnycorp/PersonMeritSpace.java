@@ -1,5 +1,10 @@
 package eu.flatwhite.shiro.spatial.funnycorp;
 
+/**
+ * Person space that uses person's merit for distance. This is a real euclidean space.
+ * 
+ * @author cstamas
+ */
 public class PersonMeritSpace
     extends PersonSpace
 {

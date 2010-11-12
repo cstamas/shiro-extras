@@ -27,11 +27,11 @@ public class FunnyCorpTest
         //
         // 1 - all the girls may have a coffee
         // 2 - all the boys may have a coke
-        // 3 - all the "merit" employees having badge less than 10 may have a beer
+        // 3 - all the "merited" employees (having badgeNo less or equal 10) may have a beer
         //
         // Note: this is an example of "misuse" of spatiality, since we do not have a real "space" defined here
         // in it's Euclidean way, but still, by cheating with relation providers we can do even this.
-        // This is actually a finite space, etc.
+        // One of these is actually a finite space, etc.
 
         PersonSpace personSpace = new PersonSpace();
 
@@ -50,6 +50,7 @@ public class FunnyCorpTest
 
         // girls may have coffee
         // gender space is finite space, so SamePointRelation provider does it
+        // the important thing is the "space" in which we place that template person
         SpatialPermission sp1 =
             new SpatialPermission( new Person( genderSpace, "template", Gender.FEMALE, 0 ),
                 new SamePointRelationProvider(), new WildcardPermission( "coffee" ) );
@@ -70,46 +71,62 @@ public class FunnyCorpTest
             new SpatialPermission( new Person( meritSpace, "template", null, 10 ), new SphereRelationProvider(),
                 permissions );
 
+        // for checks
+
         // going in order
-        Assert.assertEquals( false, sp1.implies( new SpatialPermission( new Avatar( genderSpace, jason ),
-            new SamePointRelationProvider(), new WildcardPermission( "coffee" ) ) ) );
-        Assert.assertEquals( false, sp1.implies( new SpatialPermission( new Avatar( genderSpace, thomas ),
-            new SamePointRelationProvider(), new WildcardPermission( "coffee" ) ) ) );
-        Assert.assertEquals( true, sp1.implies( new SpatialPermission( new Avatar( genderSpace, kristine ),
-            new SamePointRelationProvider(), new WildcardPermission( "coffee" ) ) ) );
-        Assert.assertEquals( false, sp1.implies( new SpatialPermission( new Avatar( genderSpace, damian ),
-            new SamePointRelationProvider(), new WildcardPermission( "coffee" ) ) ) );
-        Assert.assertEquals( false, sp1.implies( new SpatialPermission( new Avatar( genderSpace, toby ),
-            new SamePointRelationProvider(), new WildcardPermission( "coffee" ) ) ) );
-        Assert.assertEquals( true, sp1.implies( new SpatialPermission( new Avatar( genderSpace, linda ),
-            new SamePointRelationProvider(), new WildcardPermission( "coffee" ) ) ) );
+        Assert.assertEquals( false, sp1.implies( new SpatialPermission(
+            new Avatar( sp1.getSpatial().getSpace(), jason ), new SamePointRelationProvider(), new WildcardPermission(
+                "coffee" ) ) ) );
+        Assert.assertEquals( false, sp1.implies( new SpatialPermission(
+            new Avatar( sp1.getSpatial().getSpace(), thomas ), new SamePointRelationProvider(), new WildcardPermission(
+                "coffee" ) ) ) );
+        Assert.assertEquals( true, sp1.implies( new SpatialPermission( new Avatar( sp1.getSpatial().getSpace(),
+            kristine ), new SamePointRelationProvider(), new WildcardPermission( "coffee" ) ) ) );
+        Assert.assertEquals( false, sp1.implies( new SpatialPermission(
+            new Avatar( sp1.getSpatial().getSpace(), damian ), new SamePointRelationProvider(), new WildcardPermission(
+                "coffee" ) ) ) );
+        Assert.assertEquals( false, sp1.implies( new SpatialPermission(
+            new Avatar( sp1.getSpatial().getSpace(), toby ), new SamePointRelationProvider(), new WildcardPermission(
+                "coffee" ) ) ) );
+        Assert.assertEquals( true, sp1.implies( new SpatialPermission(
+            new Avatar( sp1.getSpatial().getSpace(), linda ), new SamePointRelationProvider(), new WildcardPermission(
+                "coffee" ) ) ) );
 
         // sp2
-        Assert.assertEquals( true, sp2.implies( new SpatialPermission( new Avatar( genderSpace, jason ),
+        Assert.assertEquals( true, sp2.implies( new SpatialPermission(
+            new Avatar( sp2.getSpatial().getSpace(), jason ), new SamePointRelationProvider(), new WildcardPermission(
+                "coke" ) ) ) );
+        Assert.assertEquals( true, sp2.implies( new SpatialPermission(
+            new Avatar( sp2.getSpatial().getSpace(), thomas ), new SamePointRelationProvider(), new WildcardPermission(
+                "coke" ) ) ) );
+        Assert.assertEquals( false, sp2.implies( new SpatialPermission( new Avatar( sp2.getSpatial().getSpace(),
+            kristine ), new SamePointRelationProvider(), new WildcardPermission( "coke" ) ) ) );
+        Assert.assertEquals( true, sp2.implies( new SpatialPermission(
+            new Avatar( sp2.getSpatial().getSpace(), damian ), new SamePointRelationProvider(), new WildcardPermission(
+                "coke" ) ) ) );
+        Assert.assertEquals( true, sp2.implies( new SpatialPermission( new Avatar( sp2.getSpatial().getSpace(), toby ),
             new SamePointRelationProvider(), new WildcardPermission( "coke" ) ) ) );
-        Assert.assertEquals( true, sp2.implies( new SpatialPermission( new Avatar( genderSpace, thomas ),
-            new SamePointRelationProvider(), new WildcardPermission( "coke" ) ) ) );
-        Assert.assertEquals( false, sp2.implies( new SpatialPermission( new Avatar( genderSpace, kristine ),
-            new SamePointRelationProvider(), new WildcardPermission( "coke" ) ) ) );
-        Assert.assertEquals( true, sp2.implies( new SpatialPermission( new Avatar( genderSpace, damian ),
-            new SamePointRelationProvider(), new WildcardPermission( "coke" ) ) ) );
-        Assert.assertEquals( true, sp2.implies( new SpatialPermission( new Avatar( genderSpace, toby ),
-            new SamePointRelationProvider(), new WildcardPermission( "coke" ) ) ) );
-        Assert.assertEquals( false, sp2.implies( new SpatialPermission( new Avatar( genderSpace, linda ),
-            new SamePointRelationProvider(), new WildcardPermission( "coke" ) ) ) );
+        Assert.assertEquals( false, sp2.implies( new SpatialPermission(
+            new Avatar( sp2.getSpatial().getSpace(), linda ), new SamePointRelationProvider(), new WildcardPermission(
+                "coke" ) ) ) );
 
         // sp3
-        Assert.assertEquals( true, sp3.implies( new SpatialPermission( new Avatar( meritSpace, jason ),
-            new SamePointRelationProvider(), new WildcardPermission( "beer" ) ) ) );
-        Assert.assertEquals( true, sp3.implies( new SpatialPermission( new Avatar( meritSpace, thomas ),
-            new SamePointRelationProvider(), new WildcardPermission( "beer" ) ) ) );
-        Assert.assertEquals( false, sp3.implies( new SpatialPermission( new Avatar( meritSpace, kristine ),
-            new SamePointRelationProvider(), new WildcardPermission( "beer" ) ) ) );
-        Assert.assertEquals( true, sp3.implies( new SpatialPermission( new Avatar( meritSpace, damian ),
-            new SamePointRelationProvider(), new WildcardPermission( "beer" ) ) ) );
-        Assert.assertEquals( false, sp3.implies( new SpatialPermission( new Avatar( meritSpace, toby ),
-            new SamePointRelationProvider(), new WildcardPermission( "beer" ) ) ) );
-        Assert.assertEquals( false, sp3.implies( new SpatialPermission( new Avatar( meritSpace, linda ),
-            new SamePointRelationProvider(), new WildcardPermission( "beer" ) ) ) );
+        Assert.assertEquals( true, sp3.implies( new SpatialPermission(
+            new Avatar( sp3.getSpatial().getSpace(), jason ), new SamePointRelationProvider(), new WildcardPermission(
+                "beer" ) ) ) );
+        Assert.assertEquals( true, sp3.implies( new SpatialPermission(
+            new Avatar( sp3.getSpatial().getSpace(), thomas ), new SamePointRelationProvider(), new WildcardPermission(
+                "beer" ) ) ) );
+        Assert.assertEquals( false, sp3.implies( new SpatialPermission( new Avatar( sp3.getSpatial().getSpace(),
+            kristine ), new SamePointRelationProvider(), new WildcardPermission( "beer" ) ) ) );
+        Assert.assertEquals( true, sp3.implies( new SpatialPermission(
+            new Avatar( sp3.getSpatial().getSpace(), damian ), new SamePointRelationProvider(), new WildcardPermission(
+                "beer" ) ) ) );
+        Assert.assertEquals( false, sp3.implies( new SpatialPermission(
+            new Avatar( sp3.getSpatial().getSpace(), toby ), new SamePointRelationProvider(), new WildcardPermission(
+                "beer" ) ) ) );
+        Assert.assertEquals( false, sp3.implies( new SpatialPermission(
+            new Avatar( sp3.getSpatial().getSpace(), linda ), new SamePointRelationProvider(), new WildcardPermission(
+                "beer" ) ) ) );
     }
 }

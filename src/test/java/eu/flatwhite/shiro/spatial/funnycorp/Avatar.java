@@ -2,6 +2,11 @@ package eu.flatwhite.shiro.spatial.funnycorp;
 
 import eu.flatwhite.shiro.spatial.Space;
 
+/**
+ * The Avatar delegates a person from one space to another space. Cool, ha?
+ * 
+ * @author cstamas
+ */
 public class Avatar
     extends Person
 {
