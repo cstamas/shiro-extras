@@ -10,6 +10,7 @@ public abstract class AbstractSpatial
     public AbstractSpatial( final Space space )
     {
         assert space != null : "Space cannot be null!";
+        assert space.isContaining( this );
 
         this.space = space;
     }

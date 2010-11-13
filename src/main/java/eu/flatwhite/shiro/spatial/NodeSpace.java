@@ -1,5 +1,12 @@
 package eu.flatwhite.shiro.spatial;
 
+/**
+ * A space defined on n-tree (just like URI or FS paths are). The space between two nodes is defined only if they lay on
+ * same "path" (a sequence of nodes from root to the node being last node of the biggest path, biggest chain of nodes).
+ * Hence, one of the two compared path must contain the other as "prefix".
+ * 
+ * @author cstamas
+ */
 public class NodeSpace
     implements Space
 {
