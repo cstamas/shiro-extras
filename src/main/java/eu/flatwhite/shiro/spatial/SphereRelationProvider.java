@@ -22,7 +22,11 @@ public class SphereRelationProvider
 
             Relation relation;
 
-            if ( d1 < d2 )
+            if ( Double.isNaN( s1.distance( s2 ) ) )
+            {
+                return Relation.UNRELATED;
+            }
+            else if ( d1 < d2 )
             {
                 // is outside
                 relation = Relation.OUTSIDE;

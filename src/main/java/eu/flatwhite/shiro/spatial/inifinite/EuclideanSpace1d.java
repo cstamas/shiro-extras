@@ -1,4 +1,7 @@
-package eu.flatwhite.shiro.spatial;
+package eu.flatwhite.shiro.spatial.inifinite;
+
+import eu.flatwhite.shiro.spatial.Space;
+import eu.flatwhite.shiro.spatial.Spatial;
 
 public class EuclideanSpace1d
     implements Space

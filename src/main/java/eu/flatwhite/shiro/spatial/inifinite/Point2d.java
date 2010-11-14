@@ -1,4 +1,6 @@
-package eu.flatwhite.shiro.spatial;
+package eu.flatwhite.shiro.spatial.inifinite;
+
+import eu.flatwhite.shiro.spatial.Space;
 
 public class Point2d
     extends Point1d

@@ -1,4 +1,8 @@
-package eu.flatwhite.shiro.spatial;
+package eu.flatwhite.shiro.spatial.finite;
+
+import eu.flatwhite.shiro.spatial.Relation;
+import eu.flatwhite.shiro.spatial.Spatial;
+import eu.flatwhite.shiro.spatial.SphereRelationProvider;
 
 /**
  * Node relation provider extends the sphere notion on trees, in a way that it enforces that the two provided spatial

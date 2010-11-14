@@ -1,4 +1,7 @@
-package eu.flatwhite.shiro.spatial;
+package eu.flatwhite.shiro.spatial.inifinite;
+
+import eu.flatwhite.shiro.spatial.AbstractSpatial;
+import eu.flatwhite.shiro.spatial.Space;
 
 public class Point1d
     extends AbstractSpatial

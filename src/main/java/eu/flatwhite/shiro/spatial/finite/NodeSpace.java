@@ -1,4 +1,7 @@
-package eu.flatwhite.shiro.spatial;
+package eu.flatwhite.shiro.spatial.finite;
+
+import eu.flatwhite.shiro.spatial.Space;
+import eu.flatwhite.shiro.spatial.Spatial;
 
 /**
  * A space defined on n-tree (just like URI or FS paths are). The space between two nodes is defined only if they lay on

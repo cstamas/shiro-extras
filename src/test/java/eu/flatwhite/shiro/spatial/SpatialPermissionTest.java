@@ -8,6 +8,12 @@ import junit.framework.TestCase;
 import org.apache.shiro.authz.Permission;
 import org.apache.shiro.authz.permission.WildcardPermission;
 
+import eu.flatwhite.shiro.spatial.finite.Node;
+import eu.flatwhite.shiro.spatial.finite.NodeRelationProvider;
+import eu.flatwhite.shiro.spatial.finite.NodeSpace;
+import eu.flatwhite.shiro.spatial.inifinite.EuclideanSpace3d;
+import eu.flatwhite.shiro.spatial.inifinite.Point3d;
+
 public class SpatialPermissionTest
     extends TestCase
 {

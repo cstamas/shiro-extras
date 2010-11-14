@@ -1,9 +1,12 @@
-package eu.flatwhite.shiro.spatial;
+package eu.flatwhite.shiro.spatial.finite;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+
+import eu.flatwhite.shiro.spatial.AbstractSpatial;
+import eu.flatwhite.shiro.spatial.Space;
 
 public class Node
     extends AbstractSpatial
