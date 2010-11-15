@@ -6,9 +6,11 @@ import eu.flatwhite.shiro.spatial.Spatial;
 public class EuclideanSpace2d
     implements Space
 {
+    private final Point2d origin = new Point2d( this, 0, 0 );
+
     public Point2d getOrigin()
     {
-        return new Point2d( this, 0, 0 );
+        return origin;
     }
 
     public boolean isContaining( Spatial spatial )

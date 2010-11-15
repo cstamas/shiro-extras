@@ -14,6 +14,13 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
+  <licenses>
+    <license>
+      <name>GPLv3</name>
+      <url>http://www.gnu.org/licenses/gpl.txt</url>
+    </license>
+  </licenses>
+
   <dependencies>
     <dependency>
       <groupId>org.apache.shiro</groupId>

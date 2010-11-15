@@ -26,7 +26,7 @@ public class SpatialPermission
 
         this.relationProvider = relationProvider;
 
-        this.permissions = new HashMap<Relation, Permission>( 3 );
+        this.permissions = new HashMap<Relation, Permission>( Relation.values().length );
     }
 
     public SpatialPermission( final Spatial spatial, final RelationProvider relationProvider,

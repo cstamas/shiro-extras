@@ -13,9 +13,11 @@ import eu.flatwhite.shiro.spatial.funnycorp.Person.Gender;
 public class PersonSpace
     implements Space
 {
+    private final Person origin = new Person( this, "Adam", Gender.MALE, 0 );
+
     public Spatial getOrigin()
     {
-        return new Person( this, "Adam", Gender.MALE, 0 );
+        return origin;
     }
 
     public boolean isContaining( Spatial spatial )

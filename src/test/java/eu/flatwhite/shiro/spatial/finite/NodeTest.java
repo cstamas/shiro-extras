@@ -1,7 +1,5 @@
-package eu.flatwhite.shiro.spatial;
+package eu.flatwhite.shiro.spatial.finite;
 
-import eu.flatwhite.shiro.spatial.finite.Node;
-import eu.flatwhite.shiro.spatial.finite.NodeSpace;
 import junit.framework.Assert;
 import junit.framework.TestCase;
 

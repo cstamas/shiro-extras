@@ -6,9 +6,11 @@ import eu.flatwhite.shiro.spatial.Spatial;
 public class ArtifactSpace
     implements Space
 {
+    private final ArtifactCoordinate origin = new ArtifactCoordinate( this, "", "", "0" );
+
     public Spatial getOrigin()
     {
-        return new ArtifactCoordinate( this, "", "", "0" );
+        return origin;
     }
 
     public boolean isContaining( Spatial spatial )
