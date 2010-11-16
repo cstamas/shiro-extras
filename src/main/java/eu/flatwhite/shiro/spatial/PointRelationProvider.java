@@ -7,7 +7,7 @@ package eu.flatwhite.shiro.spatial;
  * 
  * @author cstamas
  */
-public class SamePointRelationProvider
+public class PointRelationProvider
     implements RelationProvider
 {
     public Relation getRelation( Spatial s1, Spatial s2 )

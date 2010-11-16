@@ -35,23 +35,23 @@ public class SpatialPermissionTest
 
         // we have a sphere with radius 1. all these below are touching it
         SpatialPermission touch1 =
-            new SpatialPermission( new Point3d( space, 0, 1, 0 ), new SamePointRelationProvider(),
+            new SpatialPermission( new Point3d( space, 0, 1, 0 ), new PointRelationProvider(),
                 new WildcardPermission( "touches" ) );
         SpatialPermission touch2 =
-            new SpatialPermission( new Point3d( space, 0, 0, 1 ), new SamePointRelationProvider(),
+            new SpatialPermission( new Point3d( space, 0, 0, 1 ), new PointRelationProvider(),
                 new WildcardPermission( "touches" ) );
         SpatialPermission touch3 =
-            new SpatialPermission( new Point3d( space, 1, 0, 0 ), new SamePointRelationProvider(),
+            new SpatialPermission( new Point3d( space, 1, 0, 0 ), new PointRelationProvider(),
                 new WildcardPermission( "touches" ) );
 
         // the origin is inside
         SpatialPermission inside =
-            new SpatialPermission( space.getOrigin(), new SamePointRelationProvider(),
+            new SpatialPermission( space.getOrigin(), new PointRelationProvider(),
                 new WildcardPermission( "inside" ) );
 
         // this point is outside
         SpatialPermission outside =
-            new SpatialPermission( new Point3d( space, 2, 2, 2 ), new SamePointRelationProvider(),
+            new SpatialPermission( new Point3d( space, 2, 2, 2 ), new PointRelationProvider(),
                 new WildcardPermission( "outside" ) );
 
         Assert.assertTrue( permission.implies( touch1 ) );
@@ -62,15 +62,15 @@ public class SpatialPermissionTest
 
         // point does not touch
         SpatialPermission wrong1 =
-            new SpatialPermission( new Point3d( space, 2, 0, 0 ), new SamePointRelationProvider(),
+            new SpatialPermission( new Point3d( space, 2, 0, 0 ), new PointRelationProvider(),
                 new WildcardPermission( "touches" ) );
         // origin is not outside
         SpatialPermission wrong2 =
-            new SpatialPermission( space.getOrigin(), new SamePointRelationProvider(), new WildcardPermission(
+            new SpatialPermission( space.getOrigin(), new PointRelationProvider(), new WildcardPermission(
                 "outside" ) );
         // point is not inside
         SpatialPermission wrong3 =
-            new SpatialPermission( new Point3d( space, 2, 2, 2 ), new SamePointRelationProvider(),
+            new SpatialPermission( new Point3d( space, 2, 2, 2 ), new PointRelationProvider(),
                 new WildcardPermission( "inside" ) );
 
         Assert.assertFalse( permission.implies( wrong1 ) );

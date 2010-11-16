@@ -9,7 +9,7 @@ import org.apache.shiro.authz.Permission;
 import org.apache.shiro.authz.permission.WildcardPermission;
 
 import eu.flatwhite.shiro.spatial.Relation;
-import eu.flatwhite.shiro.spatial.SamePointRelationProvider;
+import eu.flatwhite.shiro.spatial.PointRelationProvider;
 import eu.flatwhite.shiro.spatial.SpatialPermission;
 import eu.flatwhite.shiro.spatial.SphereRelationProvider;
 import eu.flatwhite.shiro.spatial.funnycorp.Person.Gender;
@@ -60,7 +60,7 @@ public class FunnyCorpTest
 
         SpatialPermission coffeSpatialPermission =
             new SpatialPermission( new Person( genderSpace, "template", Gender.FEMALE, 0 ),
-                new SamePointRelationProvider(), coffePermission );
+                new PointRelationProvider(), coffePermission );
 
         check( false, coffeSpatialPermission, jason, coffePermission );
         check( false, coffeSpatialPermission, thomas, coffePermission );
@@ -75,7 +75,7 @@ public class FunnyCorpTest
 
         SpatialPermission cokeSpatialPermission =
             new SpatialPermission( new Person( genderSpace, "template", Gender.MALE, 0 ),
-                new SamePointRelationProvider(), cokePermission );
+                new PointRelationProvider(), cokePermission );
 
         check( true, cokeSpatialPermission, jason, cokePermission );
         check( true, cokeSpatialPermission, thomas, cokePermission );
@@ -113,6 +113,6 @@ public class FunnyCorpTest
         // a space, since there is no distance defined.
 
         Assert.assertEquals( impliesExpected, sp.implies( new SpatialPermission( new Avatar(
-            sp.getSpatial().getSpace(), person ), new SamePointRelationProvider(), vendingMachineContentPermission ) ) );
+            sp.getSpatial().getSpace(), person ), new PointRelationProvider(), vendingMachineContentPermission ) ) );
     }
 }
