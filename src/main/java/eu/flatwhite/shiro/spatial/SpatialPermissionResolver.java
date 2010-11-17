@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.shiro.authz.Permission;
 import org.apache.shiro.authz.permission.InvalidPermissionStringException;
 import org.apache.shiro.authz.permission.PermissionResolver;
+import org.apache.shiro.authz.permission.PermissionResolverAware;
 import org.apache.shiro.authz.permission.WildcardPermissionResolver;
 
 import eu.flatwhite.shiro.spatial.finite.NodeSpace;
@@ -46,7 +47,8 @@ import eu.flatwhite.shiro.spatial.finite.NodeSpace;
  *
  * @author philippe.laflamme@gmail.com
  */
-public class SpatialPermissionResolver implements PermissionResolver {
+public class SpatialPermissionResolver implements PermissionResolver,
+	PermissionResolverAware {
 
     private final SpaceResolver spaceResolver;
 
@@ -72,6 +74,12 @@ public class SpatialPermissionResolver implements PermissionResolver {
 	this.spaceResolver = spaceResolver;
 	this.spatialResolver = spatialResolver;
 	this.spaceRelationProvider = spaceRelationProvider;
+    }
+
+    @Override
+    public void setPermissionResolver(
+	    PermissionResolver relationPermissionResolver) {
+	setRelationPermissionResolver(relationPermissionResolver);
     }
 
     public void setRelationPermissionResolver(
@@ -121,11 +129,11 @@ public class SpatialPermissionResolver implements PermissionResolver {
     }
 
     protected Space resolveSpace(String spaceString) {
-	return this.spaceResolver.resolveSpace(spaceString);
+	return spaceResolver.resolveSpace(spaceString);
     }
 
     protected Spatial resolveSpatial(Space space, String spatialString) {
-	return this.spatialResolver.resolveSpatial(space, spatialString);
+	return spatialResolver.resolveSpatial(space, spatialString);
     }
 
     protected Permission resolveRelationPermission(Relation relation,
