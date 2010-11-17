@@ -22,6 +22,14 @@ public interface Space
      * @return
      */
     boolean isContaining( Spatial spatial );
+    
+    /**
+     * Returns a projection of a {@code Spatial} of another {@code Space} onto this space or null if the projection cannot be performed.
+     * 
+     * @param spatial
+     * @return
+     */
+    Spatial project(Spatial spatial);
 
     /**
      * Calculates the distance between two spatial. Result will be Double.NaN, if one or both spatial does not belong to

@@ -1,16 +1,30 @@
 package eu.flatwhite.shiro.spatial.funnycorp;
 
+import eu.flatwhite.shiro.spatial.Spatial;
+import eu.flatwhite.shiro.spatial.inifinite.EuclideanSpace;
+import eu.flatwhite.shiro.spatial.inifinite.Point;
+
 /**
  * Person space that uses person's merit for distance. This is a real euclidean space.
  * 
  * @author cstamas
  */
 public class PersonMeritSpace
-    extends PersonSpace
+    extends EuclideanSpace
 {
-    @Override
-    protected double calculateDistance( Person p1, Person p2 )
+  
+    public PersonMeritSpace() 
     {
-        return Math.abs( p1.getBadgeNo() - p2.getBadgeNo() );
+      super(1);
+    }
+
+    @Override
+    public Spatial project(Spatial spatial) 
+    {
+      // Project a person's badgeNo onto our single dimension
+      if(spatial instanceof Person) {
+        return new Point(this, ((Person)spatial).getBadgeNo());
+      }
+      return null;
     }
 }

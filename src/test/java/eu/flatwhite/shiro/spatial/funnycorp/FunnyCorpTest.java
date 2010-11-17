@@ -21,11 +21,11 @@ import eu.flatwhite.shiro.spatial.SpaceResolver;
 import eu.flatwhite.shiro.spatial.Spatial;
 import eu.flatwhite.shiro.spatial.SpatialPermission;
 import eu.flatwhite.shiro.spatial.SpatialPermissionResolver;
-import eu.flatwhite.shiro.spatial.SpatialProjector;
 import eu.flatwhite.shiro.spatial.SpatialResolver;
 import eu.flatwhite.shiro.spatial.SphereRelationProvider;
+import eu.flatwhite.shiro.spatial.finite.EnumSpatial;
 import eu.flatwhite.shiro.spatial.funnycorp.Person.Gender;
-import eu.flatwhite.shiro.spatial.inifinite.Point1d;
+import eu.flatwhite.shiro.spatial.inifinite.Point;
 import eu.flatwhite.shiro.spatial.inifinite.PointResolver;
 
 public class FunnyCorpTest extends TestCase {
@@ -69,7 +69,7 @@ public class FunnyCorpTest extends TestCase {
     // the important thing is the "space" in which we place that template person
     String coffePermission = "coffee";
 
-    SpatialPermission coffeSpatialPermission = new SpatialPermission(new Person(genderSpace, "template", Gender.FEMALE, 0), new SamePointRelationProvider(), coffePermission);
+    SpatialPermission coffeSpatialPermission = new SpatialPermission(new EnumSpatial(genderSpace, Gender.FEMALE), new SamePointRelationProvider(), coffePermission);
 
     check(false, coffeSpatialPermission, jason, coffePermission);
     check(false, coffeSpatialPermission, thomas, coffePermission);
@@ -82,7 +82,7 @@ public class FunnyCorpTest extends TestCase {
     // gender space is finite space, so SamePointRelation provider does it
     String cokePermission = "coke";
 
-    SpatialPermission cokeSpatialPermission = new SpatialPermission(new Person(genderSpace, "template", Gender.MALE, 0), new SamePointRelationProvider(), cokePermission);
+    SpatialPermission cokeSpatialPermission = new SpatialPermission(new EnumSpatial(genderSpace, Gender.MALE), new SamePointRelationProvider(), cokePermission);
 
     check(true, cokeSpatialPermission, jason, cokePermission);
     check(true, cokeSpatialPermission, thomas, cokePermission);
@@ -100,7 +100,7 @@ public class FunnyCorpTest extends TestCase {
     permissions.put(Relation.TOUCHES, beerPermission);
     permissions.put(Relation.INSIDE, beerPermission);
 
-    SpatialPermission beerSpatialPermission = new SpatialPermission(new Person(meritSpace, "template", null, 10), new SphereRelationProvider(), permissions);
+    SpatialPermission beerSpatialPermission = new SpatialPermission(new Point(meritSpace, 10), new SphereRelationProvider(), permissions);
 
     check(true, beerSpatialPermission, jason, beerPermission);
     check(true, beerSpatialPermission, thomas, beerPermission);
@@ -139,33 +139,15 @@ public class FunnyCorpTest extends TestCase {
     SpatialResolver genderResolver = new SpatialResolver() {
       @Override
       public Spatial parseSpatial(Space space, String spatialString) {
-        return new Person(genderSpace, "template", Gender.valueOf(spatialString.toUpperCase()), 0);
+        return new EnumSpatial(genderSpace, Gender.valueOf(spatialString.toUpperCase()));
       }
     };
     
-    final PersonMeritSpace meritSpace = new PersonMeritSpace();
-    SpatialResolver meritResolver = new SpatialResolver() {
-      @Override
-      public Spatial parseSpatial(Space space, String spatialString) {
-        return new Person(meritSpace, "template", Gender.MALE, Integer.parseInt(spatialString));
-      }
-    };
-
-    SpatialProjector personProjector = new SpatialProjector() {
-
-      @Override
-      public Spatial project(Spatial spatial, Space space) {
-        if(spatial.getClass().equals(Person.class)) {
-          return new Avatar(space, (Person) spatial);
-        }
-        return null;
-      }
-
-    };
+    PersonMeritSpace meritSpace = new PersonMeritSpace();
 
     SpaceResolver spaceResolver = MapSpaceResolver.Builder.newSpaceMap().addSpace("person", personSpace).addSpace("gender", genderSpace).addSpace("merit", meritSpace).build();
-    SpatialResolver spatialResolvers = MapSpatialResolver.Builder.newMap().add(personSpace, personResolver).add(genderSpace, genderResolver).add(meritSpace, meritResolver).build();
-    SpaceRelationProvider spaceRelationProviders = MapSpaceRelationProvider.Builder.newMap().projector(personProjector).add(personSpace, new SamePointRelationProvider()).add(genderSpace, new SamePointRelationProvider()).add(meritSpace, new SphereRelationProvider()).build();
+    SpatialResolver spatialResolvers = MapSpatialResolver.Builder.newMap().add(personSpace, personResolver).add(genderSpace, genderResolver).add(meritSpace, new PointResolver()).build();
+    SpaceRelationProvider spaceRelationProviders = MapSpaceRelationProvider.Builder.newMap().add(personSpace, new SamePointRelationProvider()).add(genderSpace, new SamePointRelationProvider()).add(meritSpace, new SphereRelationProvider()).build();
     SpatialPermissionResolver resolver = new SpatialPermissionResolver(spaceResolver, spatialResolvers, spaceRelationProviders);
 
     // Rule 1 - all the girls may have a coffee
@@ -208,7 +190,7 @@ public class FunnyCorpTest extends TestCase {
     // obey the space where the rule's spatial is defined. Also, employees are in personSpace, that is actually not
     // a space, since there is no distance defined.
 
-    Assert.assertEquals(impliesExpected, sp.implies(new SpatialPermission(new Avatar(sp.getSpatial().getSpace(), person), new SamePointRelationProvider(), vendingMachineContentPermission)));
+    Assert.assertEquals(impliesExpected, sp.implies(new SpatialPermission(person, new SamePointRelationProvider(), vendingMachineContentPermission)));
   }
 
 }

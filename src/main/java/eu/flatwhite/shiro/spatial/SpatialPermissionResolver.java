@@ -20,7 +20,8 @@ import eu.flatwhite.shiro.spatial.finite.NodeSpace;
  * <p>
  * An example using a {@link NodeSpace}
  * <pre>
- * menu:/Edit/Delete:execute
+ * menu:/Edit/Delete:execute (allows 'execute' on /Edit/Delete)
+ * menu:/Edit/Delete:execute:view (allows 'execute' on /Edit/Delete and 'view' on nodes INSIDE)
  * </pre>
  * <p>
  * This implementation relies on {@link SpaceResolver} to resolve the <pre>{space}</pre> part, a {@link SpatialResolver} to resolve the <pre>{spatial}</pre> part.
@@ -52,7 +53,7 @@ public class SpatialPermissionResolver implements PermissionResolver {
     String[] parts = permissionString.split(":");
 
     if(parts.length < 3) {
-      throw new InvalidPermissionStringException("Expected at least 3 parts 'space:node:touches'", permissionString);
+      throw new InvalidPermissionStringException("Expected at least 3 parts '{space}:{spatial}:{touches}'", permissionString);
     }
 
     Map<Relation, String> permissions = new HashMap<Relation, String>();

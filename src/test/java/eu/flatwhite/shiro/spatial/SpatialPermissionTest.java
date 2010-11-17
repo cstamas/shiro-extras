@@ -11,8 +11,8 @@ import eu.flatwhite.shiro.spatial.finite.Node;
 import eu.flatwhite.shiro.spatial.finite.NodeRelationProvider;
 import eu.flatwhite.shiro.spatial.finite.NodeResolver;
 import eu.flatwhite.shiro.spatial.finite.NodeSpace;
-import eu.flatwhite.shiro.spatial.inifinite.EuclideanSpace3d;
-import eu.flatwhite.shiro.spatial.inifinite.Point3d;
+import eu.flatwhite.shiro.spatial.inifinite.EuclideanSpace;
+import eu.flatwhite.shiro.spatial.inifinite.Point;
 
 public class SpatialPermissionTest
     extends TestCase
@@ -20,11 +20,11 @@ public class SpatialPermissionTest
     public void testSphere()
     {
         // set up the 3d euclidean space
-        EuclideanSpace3d space = new EuclideanSpace3d();
+        EuclideanSpace space = new EuclideanSpace(3);
 
         // Problem: define a sphere with radius of 1 in space. Air molecules within that sphere have permission
         // "inside", on the sphere surface has permission "touches" and outside it has permission "outside"
-        Point3d myPoint = new Point3d( space, 1, 0, 0 );
+        Point myPoint = new Point( space, 1, 0, 0 );
 
         // create my permission
         HashMap<Relation, String> permissions = new HashMap<Relation, String>();
@@ -35,13 +35,13 @@ public class SpatialPermissionTest
 
         // we have a sphere with radius 1. all these below are touching it
         SpatialPermission touch1 =
-            new SpatialPermission( new Point3d( space, 0, 1, 0 ), new SamePointRelationProvider(),
+            new SpatialPermission( new Point( space, 0, 1, 0 ), new SamePointRelationProvider(),
                 "touches" );
         SpatialPermission touch2 =
-            new SpatialPermission( new Point3d( space, 0, 0, 1 ), new SamePointRelationProvider(),
+            new SpatialPermission( new Point( space, 0, 0, 1 ), new SamePointRelationProvider(),
                 "touches" );
         SpatialPermission touch3 =
-            new SpatialPermission( new Point3d( space, 1, 0, 0 ), new SamePointRelationProvider(),
+            new SpatialPermission( new Point( space, 1, 0, 0 ), new SamePointRelationProvider(),
                 "touches" );
 
         // the origin is inside
@@ -51,7 +51,7 @@ public class SpatialPermissionTest
 
         // this point is outside
         SpatialPermission outside =
-            new SpatialPermission( new Point3d( space, 2, 2, 2 ), new SamePointRelationProvider(),
+            new SpatialPermission( new Point( space, 2, 2, 2 ), new SamePointRelationProvider(),
                 "outside" );
 
         Assert.assertTrue( permission.implies( touch1 ) );
@@ -62,7 +62,7 @@ public class SpatialPermissionTest
 
         // point does not touch
         SpatialPermission wrong1 =
-            new SpatialPermission( new Point3d( space, 2, 0, 0 ), new SamePointRelationProvider(),
+            new SpatialPermission( new Point( space, 2, 0, 0 ), new SamePointRelationProvider(),
                 "touches" );
         // origin is not outside
         SpatialPermission wrong2 =
@@ -70,7 +70,7 @@ public class SpatialPermissionTest
                 "outside"  );
         // point is not inside
         SpatialPermission wrong3 =
-            new SpatialPermission( new Point3d( space, 2, 2, 2 ), new SamePointRelationProvider(),
+            new SpatialPermission( new Point( space, 2, 2, 2 ), new SamePointRelationProvider(),
                 "inside" );
 
         Assert.assertFalse( permission.implies( wrong1 ) );

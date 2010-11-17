@@ -1,51 +1,48 @@
 package eu.flatwhite.shiro.spatial.infinite;
 
+import junit.framework.TestCase;
+
 import org.apache.shiro.authz.permission.InvalidPermissionStringException;
 
-import junit.framework.TestCase;
 import eu.flatwhite.shiro.spatial.Spatial;
-import eu.flatwhite.shiro.spatial.inifinite.EuclideanSpace1d;
-import eu.flatwhite.shiro.spatial.inifinite.EuclideanSpace2d;
-import eu.flatwhite.shiro.spatial.inifinite.EuclideanSpace3d;
-import eu.flatwhite.shiro.spatial.inifinite.Point1d;
-import eu.flatwhite.shiro.spatial.inifinite.Point2d;
-import eu.flatwhite.shiro.spatial.inifinite.Point3d;
+import eu.flatwhite.shiro.spatial.inifinite.EuclideanSpace;
+import eu.flatwhite.shiro.spatial.inifinite.Point;
 import eu.flatwhite.shiro.spatial.inifinite.PointResolver;
 
 public class PointResolverTest extends TestCase {
 
   public void testResolve1D() {
-    EuclideanSpace1d space = new EuclideanSpace1d();
+    EuclideanSpace space = new EuclideanSpace(1);
     PointResolver pointResolver = new PointResolver();
-    Spatial point1d = pointResolver.parseSpatial(space, "1.0");
-    assertEquals(space, point1d.getSpace());
-    assertEquals(1.0, ((Point1d)point1d).getX());
+    Spatial point = pointResolver.parseSpatial(space, "1.0");
+    assertEquals(space, point.getSpace());
+    assertEquals(1.0, ((Point)point).get(0));
   }
 
   public void testResolve2D() {
-    EuclideanSpace2d space = new EuclideanSpace2d();
+    EuclideanSpace space = new EuclideanSpace(2);
     PointResolver pointResolver = new PointResolver();
-    Spatial point2d = pointResolver.parseSpatial(space, "1.0,2.0");
-    assertEquals(space, point2d.getSpace());
-    assertEquals(1.0, ((Point2d)point2d).getX());
-    assertEquals(2.0, ((Point2d)point2d).getY());
+    Spatial point = pointResolver.parseSpatial(space, "1.0,2.0");
+    assertEquals(space, point.getSpace());
+    assertEquals(1.0, ((Point)point).get(0));
+    assertEquals(2.0, ((Point)point).get(1));
   }
   
   public void testResolve3D() {
-    EuclideanSpace3d space = new EuclideanSpace3d();
+    EuclideanSpace space = new EuclideanSpace(3);
     PointResolver pointResolver = new PointResolver();
-    Spatial point3d = pointResolver.parseSpatial(space, "1.0,2.0,3.0");
-    assertEquals(space, point3d.getSpace());
-    assertEquals(1.0, ((Point3d)point3d).getX());
-    assertEquals(2.0, ((Point3d)point3d).getY());
-    assertEquals(3.0, ((Point3d)point3d).getZ());
+    Spatial point = pointResolver.parseSpatial(space, "1.0,2.0,3.0");
+    assertEquals(space, point.getSpace());
+    assertEquals(1.0, ((Point)point).get(0));
+    assertEquals(2.0, ((Point)point).get(1));
+    assertEquals(3.0, ((Point)point).get(2));
   }
 
   public void testThrowsInvalidPermissionStringWhenNotANumber() {
     String invalidString = "1.0,NotANumber";
     PointResolver pointResolver = new PointResolver();
     try {
-      pointResolver.parseSpatial(new EuclideanSpace2d(), invalidString);
+      pointResolver.parseSpatial(new EuclideanSpace(2), invalidString);
       fail("Expected exception");
     } catch(InvalidPermissionStringException e) {
       assertEquals(invalidString, e.getPermissionString());
