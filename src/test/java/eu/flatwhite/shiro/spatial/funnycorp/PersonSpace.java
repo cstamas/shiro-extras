@@ -1,6 +1,6 @@
 package eu.flatwhite.shiro.spatial.funnycorp;
 
-import eu.flatwhite.shiro.spatial.Space;
+import eu.flatwhite.shiro.spatial.AbstractSpace;
 import eu.flatwhite.shiro.spatial.Spatial;
 import eu.flatwhite.shiro.spatial.funnycorp.Person.Gender;
 
@@ -11,9 +11,10 @@ import eu.flatwhite.shiro.spatial.funnycorp.Person.Gender;
  * @author cstamas
  */
 public class PersonSpace
-    implements Space
+    extends AbstractSpace
 {
-    private final Person origin = new Person( this, "Adam", Gender.MALE, 0 );
+    // The origin of all Person is necessarily a woman
+    private final Person origin = new Person( this, "Eve", Gender.FEMALE, 0 );
 
     public Spatial getOrigin()
     {
@@ -25,20 +26,9 @@ public class PersonSpace
         return spatial instanceof Person;
     }
 
-    public double distance( Spatial s1, Spatial s2 )
+    protected double calculateDistance(Spatial s1, Spatial s2) 
     {
-        if ( isContaining( s1 ) && isContaining( s2 ) )
-        {
-            return calculateDistance( (Person) s1, (Person) s2 );
-        }
-        else
-        {
-            return Double.NaN;
-        }
+      return Double.NaN;
     }
 
-    protected double calculateDistance( Person p1, Person p2 )
-    {
-        return Double.NaN;
-    }
 }

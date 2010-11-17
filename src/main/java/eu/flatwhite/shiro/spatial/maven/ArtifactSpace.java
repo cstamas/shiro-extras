@@ -1,10 +1,10 @@
 package eu.flatwhite.shiro.spatial.maven;
 
-import eu.flatwhite.shiro.spatial.Space;
+import eu.flatwhite.shiro.spatial.AbstractSpace;
 import eu.flatwhite.shiro.spatial.Spatial;
 
 public class ArtifactSpace
-    implements Space
+    extends AbstractSpace
 {
     private final ArtifactCoordinate origin = new ArtifactCoordinate( this, "", "", "0" );
 
@@ -18,16 +18,9 @@ public class ArtifactSpace
         return spatial instanceof ArtifactCoordinate;
     }
 
-    public double distance( Spatial s1, Spatial s2 )
+    protected double calculateDistance( Spatial s1, Spatial s2 )
     {
-        if ( isContaining( s1 ) && isContaining( s2 ) )
-        {
-            return calculateDistance( (ArtifactCoordinate) s1, (ArtifactCoordinate) s2 );
-        }
-        else
-        {
-            return Double.NaN;
-        }
+        return calculateDistance( (ArtifactCoordinate) s1, (ArtifactCoordinate) s2 );
     }
 
     protected double calculateDistance( ArtifactCoordinate a1, ArtifactCoordinate a2 )

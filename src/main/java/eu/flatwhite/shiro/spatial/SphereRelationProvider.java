@@ -9,44 +9,32 @@ package eu.flatwhite.shiro.spatial;
  * @author cstamas
  */
 public class SphereRelationProvider
-    implements RelationProvider
+    extends AbstractRelationProvider
 {
-    public Relation getRelation( final Spatial s1, final Spatial s2 )
+    public Relation relate( Spatial s1, Spatial s2 )
     {
-        // are they "compatible" at all? (their spaces mutually contains themselves)
-        if ( s1.getSpace().isContaining( s2 ) && s2.getSpace().isContaining( s1 ) )
+        final double d1 = s1.distance( s1.getSpace().getOrigin() );
+
+        final double d2 = s2.distance( s2.getSpace().getOrigin() );
+
+        Relation relation;
+
+        if ( d1 < d2 )
         {
-            final double d1 = s1.distance( s1.getSpace().getOrigin() );
-
-            final double d2 = s2.distance( s2.getSpace().getOrigin() );
-
-            Relation relation;
-
-            if ( Double.isNaN( s1.distance( s2 ) ) )
-            {
-                return Relation.UNRELATED;
-            }
-            else if ( d1 < d2 )
-            {
-                // is outside
-                relation = Relation.OUTSIDE;
-            }
-            else if ( d1 == d2 )
-            {
-                // touches, or better, "is on the surface" (if we use 3d analogy)
-                relation = Relation.TOUCHES;
-            }
-            else
-            {
-                // is inside
-                relation = Relation.INSIDE;
-            }
-
-            return relation;
+            // is outside
+            relation = Relation.OUTSIDE;
+        }
+        else if ( d1 == d2 )
+        {
+            // touches, or better, "is on the surface" (if we use 3d analogy)
+            relation = Relation.TOUCHES;
         }
         else
         {
-            return Relation.UNRELATED;
+            // is inside
+            relation = Relation.INSIDE;
         }
+
+        return relation;
     }
 }

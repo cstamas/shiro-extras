@@ -1,6 +1,12 @@
 package eu.flatwhite.shiro.spatial;
 
-public interface SpatialResolver
-{
-    Spatial resolveSpatial( String spatialString );
+/**
+ * Resolves a {@link Spatial} instance from a string.
+ * 
+ * @see {@link SpatialPermissionResolver}
+ * @author philippe.laflamme@gmail.com
+ */
+public interface SpatialResolver {
+
+  public Spatial resolveSpatial(Space space, String spatialString);
 }

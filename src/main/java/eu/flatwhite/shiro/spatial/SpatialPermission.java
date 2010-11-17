@@ -79,7 +79,7 @@ public class SpatialPermission
 
         if ( myPerm != null )
         {
-            return myPerm.implies( wp.getPermissions().get( Relation.TOUCHES ) );
+            return myPerm.implies( wp.getPermission(getSpatial(), Relation.TOUCHES));
         }
         else
         {
@@ -93,6 +93,12 @@ public class SpatialPermission
     {
         Relation relation = getRelationProvider().getRelation( getSpatial(), spatial );
 
-        return getPermissions().get( relation );
+        return getPermission(spatial, relation);
     }
+    
+    protected Permission getPermission( Spatial spatial, Relation relation )
+    {
+       return getPermissions().get(relation);
+    }
+
 }
