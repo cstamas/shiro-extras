@@ -36,7 +36,7 @@ public class PersonSpace
             return Double.NaN;
         }
     }
-
+    
     protected double calculateDistance( Person p1, Person p2 )
     {
         return Double.NaN;

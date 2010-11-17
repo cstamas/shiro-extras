@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.shiro.authz.Permission;
+import org.apache.shiro.authz.permission.WildcardPermission;
 
 public class SpatialPermission
     implements Permission, Serializable
@@ -15,7 +16,7 @@ public class SpatialPermission
 
     private final RelationProvider relationProvider;
 
-    private final Map<Relation, Permission> permissions;
+    private final Map<Relation, String> permissions;
 
     private SpatialPermission( final Spatial spatial, final RelationProvider relationProvider )
     {
@@ -26,11 +27,11 @@ public class SpatialPermission
 
         this.relationProvider = relationProvider;
 
-        this.permissions = new HashMap<Relation, Permission>( Relation.values().length );
+        this.permissions = new HashMap<Relation, String>( Relation.values().length );
     }
 
     public SpatialPermission( final Spatial spatial, final RelationProvider relationProvider,
-                              final Permission permission )
+                              final String permission )
     {
         this( spatial, relationProvider );
 
@@ -40,7 +41,7 @@ public class SpatialPermission
     }
 
     public SpatialPermission( final Spatial spatial, final RelationProvider relationProvider,
-                              final Map<Relation, Permission> permissions )
+                              final Map<Relation, String> permissions )
     {
         this( spatial, relationProvider );
 
@@ -60,7 +61,7 @@ public class SpatialPermission
         return relationProvider;
     }
 
-    public Map<Relation, Permission> getPermissions()
+    public Map<Relation, String> getPermissions()
     {
         return permissions;
     }
@@ -79,7 +80,7 @@ public class SpatialPermission
 
         if ( myPerm != null )
         {
-            return myPerm.implies( wp.getPermissions().get( Relation.TOUCHES ) );
+            return myPerm.implies( wp.getPermission(getSpatial(), Relation.TOUCHES));
         }
         else
         {
@@ -93,6 +94,18 @@ public class SpatialPermission
     {
         Relation relation = getRelationProvider().getRelation( getSpatial(), spatial );
 
-        return getPermissions().get( relation );
+        return getPermission(spatial, relation);
+    }
+    
+    protected Permission getPermission( Spatial spatial, Relation relation )
+    {
+        String perm = getPermissions().get(relation);
+        if(perm == null || perm.isEmpty()) return null;
+        return getPermission(spatial, relation, perm);
+    }
+    
+    protected Permission getPermission( Spatial spatial, Relation relation, String perm )
+    {
+       return new WildcardPermission(perm);
     }
 }
