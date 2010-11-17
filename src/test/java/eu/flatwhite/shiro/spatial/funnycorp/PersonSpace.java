@@ -13,7 +13,8 @@ import eu.flatwhite.shiro.spatial.funnycorp.Person.Gender;
 public class PersonSpace
     extends AbstractSpace
 {
-    private final Person origin = new Person( this, "Adam", Gender.MALE, 0 );
+    // The origin of all Person is necessarily a woman
+    private final Person origin = new Person( this, "Eve", Gender.FEMALE, 0 );
 
     public Spatial getOrigin()
     {
@@ -25,13 +26,9 @@ public class PersonSpace
         return spatial instanceof Person;
     }
 
-    @Override
-    protected double calculateDistance(Spatial s1, Spatial s2) {
-      return calculateDistance((Person)s1, (Person)s2);
-    }
-    
-    protected double calculateDistance( Person p1, Person p2 )
+    protected double calculateDistance(Spatial s1, Spatial s2) 
     {
-        return Double.NaN;
+      return Double.NaN;
     }
+
 }

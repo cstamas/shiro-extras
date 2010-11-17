@@ -12,11 +12,11 @@ import eu.flatwhite.shiro.spatial.SpatialResolver;
  * 
  * @author philippe.laflamme@gmail.com
  */
-public class EnumSpatialResiolver implements SpatialResolver {
+public class EnumSpatialResolver implements SpatialResolver {
 
   private final Class<? extends Enum<?>> enumeration;
 
-  public EnumSpatialResiolver(Class<? extends Enum<?>> enumeration) {
+  public EnumSpatialResolver(Class<? extends Enum<?>> enumeration) {
     this.enumeration = enumeration;
   }
 

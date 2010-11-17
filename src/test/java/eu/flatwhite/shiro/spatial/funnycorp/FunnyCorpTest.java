@@ -25,7 +25,7 @@ import eu.flatwhite.shiro.spatial.SpatialPermissionResolver;
 import eu.flatwhite.shiro.spatial.SpatialResolver;
 import eu.flatwhite.shiro.spatial.SphereRelationProvider;
 import eu.flatwhite.shiro.spatial.finite.EnumSpatial;
-import eu.flatwhite.shiro.spatial.finite.EnumSpatialResiolver;
+import eu.flatwhite.shiro.spatial.finite.EnumSpatialResolver;
 import eu.flatwhite.shiro.spatial.funnycorp.Person.Gender;
 import eu.flatwhite.shiro.spatial.inifinite.Point;
 import eu.flatwhite.shiro.spatial.inifinite.PointResolver;
@@ -137,13 +137,16 @@ public class FunnyCorpTest extends TestCase {
       }
     };
 
-    final PersonGenderSpace genderSpace = new PersonGenderSpace();
-    SpatialResolver genderResolver = new EnumSpatialResiolver(Gender.class);
+    // Gender space is an EnumeratedSpace with two points (male, female)
+    PersonGenderSpace genderSpace = new PersonGenderSpace();
+    SpatialResolver genderResolver = new EnumSpatialResolver(Gender.class);
 
+    // Merit space is a 1-dimension EuclideanSpace
     PersonMeritSpace meritSpace = new PersonMeritSpace();
+    SpatialResolver meritResolver = new PointResolver();
 
     SpaceResolver spaceResolver = MapSpaceResolver.Builder.newSpaceMap().addSpace("person", personSpace).addSpace("gender", genderSpace).addSpace("merit", meritSpace).build();
-    SpatialResolver spatialResolvers = MapSpatialResolver.Builder.newMap().add(personSpace, personResolver).add(genderSpace, genderResolver).add(meritSpace, new PointResolver()).build();
+    SpatialResolver spatialResolvers = MapSpatialResolver.Builder.newMap().add(personSpace, personResolver).add(genderSpace, genderResolver).add(meritSpace, meritResolver).build();
     SpaceRelationProvider spaceRelationProviders = MapSpaceRelationProvider.Builder.newMap().add(personSpace, new SamePointRelationProvider()).add(genderSpace, new SamePointRelationProvider()).add(meritSpace, new SphereRelationProvider()).build();
     SpatialPermissionResolver resolver = new SpatialPermissionResolver(spaceResolver, spatialResolvers, spaceRelationProviders);
 
@@ -183,10 +186,6 @@ public class FunnyCorpTest extends TestCase {
   }
 
   protected void check(boolean impliesExpected, SpatialPermission sp, Person person, Permission vendingMachineContentPermission) {
-    // for checks, we have to "teleport" (using Avatar) from one space to another the person being compared, to
-    // obey the space where the rule's spatial is defined. Also, employees are in personSpace, that is actually not
-    // a space, since there is no distance defined.
-
     Assert.assertEquals(impliesExpected, sp.implies(new SpatialPermission(person, new SamePointRelationProvider(), vendingMachineContentPermission)));
   }
 
