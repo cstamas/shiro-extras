@@ -2,10 +2,10 @@ package eu.flatwhite.shiro.spatial.inifinite;
 
 import java.util.Arrays;
 
-import eu.flatwhite.shiro.spatial.Space;
+import eu.flatwhite.shiro.spatial.AbstractSpace;
 import eu.flatwhite.shiro.spatial.Spatial;
 
-public class EuclideanSpace implements Space {
+public class EuclideanSpace extends AbstractSpace {
     private final Point origin;
 
     private final int dimensions;
@@ -53,26 +53,16 @@ public class EuclideanSpace implements Space {
 	return this.dimensions;
     }
 
-    public double distance(Spatial s1, Spatial s2) {
-	if (isContaining(s1) == false) {
-	    s1 = project(s1);
-	}
-	if (isContaining(s2) == false) {
-	    s2 = project(s2);
-	}
-	if (s1 != null && s2 != null) {
-	    Point p1 = (Point) s1;
+    @Override
+    protected double calculateDistance(Spatial s1, Spatial s2) {
+	Point p1 = (Point) s1;
+	Point p2 = (Point) s2;
 
-	    Point p2 = (Point) s2;
-
-	    double sum = 0.0;
-	    for (int i = 0; i < dimensions; i++) {
-		double d = p1.get(i) - p2.get(i);
-		sum += d * d;
-	    }
-	    return Math.sqrt(sum);
-	} else {
-	    return Double.NaN;
+	double sum = 0.0;
+	for (int i = 0; i < dimensions; i++) {
+	    double d = p1.get(i) - p2.get(i);
+	    sum += d * d;
 	}
+	return Math.sqrt(sum);
     }
 }
