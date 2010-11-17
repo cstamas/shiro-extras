@@ -1,6 +1,5 @@
 package eu.flatwhite.shiro.spatial;
 
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,80 +48,96 @@ import eu.flatwhite.shiro.spatial.finite.NodeSpace;
  */
 public class SpatialPermissionResolver implements PermissionResolver {
 
-  private final SpaceResolver spaceResolver;
+    private final SpaceResolver spaceResolver;
 
-  private final SpatialResolver spatialResolver;
+    private final SpatialResolver spatialResolver;
 
-  private final SpaceRelationProvider spaceRelationProvider;
+    private final SpaceRelationProvider spaceRelationProvider;
 
-  private PermissionResolver relationPermissionResolver = new WildcardPermissionResolver();
+    private PermissionResolver relationPermissionResolver = new WildcardPermissionResolver();
 
-  public SpatialPermissionResolver(Space space, SpatialResolver spatialResolver, RelationProvider relationProvider) {
-    this(new SingleSpaceResolver(space), spatialResolver, new SingleSpaceRelationProvider(relationProvider));
-  }
-
-  public SpatialPermissionResolver(SpaceResolver spaceResolver, SpatialResolver spatialResolver, SpaceRelationProvider spaceRelationProvider) {
-    assert spaceResolver != null : "spaceResolver cannot be null";
-    assert spatialResolver != null : "spatialResolver cannot be null";
-    assert spaceRelationProvider != null : "spaceRelationProvider cannot be null";
-
-    this.spaceResolver = spaceResolver;
-    this.spatialResolver = spatialResolver;
-    this.spaceRelationProvider = spaceRelationProvider;
-  }
-
-  public void setRelationPermissionResolver(PermissionResolver relationPermissionResolver) {
-    this.relationPermissionResolver = relationPermissionResolver;
-  }
-
-  @Override
-  public Permission resolvePermission(String permissionString) {
-    String[] parts = permissionString.split(":");
-
-    if(parts.length < 3) {
-      throw new InvalidPermissionStringException("Expected at least 3 parts '{space}:{spatial}:{touches}'", permissionString);
+    public SpatialPermissionResolver(Space space,
+	    SpatialResolver spatialResolver, RelationProvider relationProvider) {
+	this(new SingleSpaceResolver(space), spatialResolver,
+		new SingleSpaceRelationProvider(relationProvider));
     }
 
-    Map<Relation, Permission> permissions = new HashMap<Relation, Permission>();
+    public SpatialPermissionResolver(SpaceResolver spaceResolver,
+	    SpatialResolver spatialResolver,
+	    SpaceRelationProvider spaceRelationProvider) {
+	assert spaceResolver != null : "spaceResolver cannot be null";
+	assert spatialResolver != null : "spatialResolver cannot be null";
+	assert spaceRelationProvider != null : "spaceRelationProvider cannot be null";
 
-    Space space = resolveSpace(parts[0]);
-    if(space == null) {
-      throw new InvalidPermissionStringException("unknown space '" + parts[0] + "'", permissionString);
-    }
-    Spatial spatial = resolveSpatial(space, parts[1]);
-
-    resolveAndAddRelationPermission(permissions, Relation.TOUCHES, parts[2]);
-
-    if(parts.length > 3) {
-      String[] perms = parts[3].split("/");
-      switch(perms.length) {
-      case 2:
-        resolveAndAddRelationPermission(permissions, Relation.OUTSIDE, perms[1]);
-      case 1:
-        resolveAndAddRelationPermission(permissions, Relation.INSIDE, perms[0]);
-        break;
-      default:
-        throw new InvalidPermissionStringException("invalid inside/outside permissions", permissionString);
-      }
+	this.spaceResolver = spaceResolver;
+	this.spatialResolver = spatialResolver;
+	this.spaceRelationProvider = spaceRelationProvider;
     }
 
-    return new SpatialPermission(spatial, spaceRelationProvider.getRelationProvider(space), permissions);
-  }
+    public void setRelationPermissionResolver(
+	    PermissionResolver relationPermissionResolver) {
+	this.relationPermissionResolver = relationPermissionResolver;
+    }
 
-  protected Space resolveSpace(String spaceString) {
-    return this.spaceResolver.resolveSpace(spaceString);
-  }
+    @Override
+    public Permission resolvePermission(String permissionString) {
+	String[] parts = permissionString.split(":");
 
-  protected Spatial resolveSpatial(Space space, String spatialString) {
-    return this.spatialResolver.resolveSpatial(space, spatialString);
-  }
+	if (parts.length < 3) {
+	    throw new InvalidPermissionStringException(
+		    "Expected at least 3 parts '{space}:{spatial}:{touches}'",
+		    permissionString);
+	}
 
-  protected Permission resolveRelationPermission(Relation relation, String permissionString) {
-    return relationPermissionResolver.resolvePermission(permissionString);
-  }
+	Map<Relation, Permission> permissions = new HashMap<Relation, Permission>();
 
-  protected void resolveAndAddRelationPermission(Map<Relation, Permission> permissions, Relation relation, String permissionString) {
-    Permission relationPermission = resolveRelationPermission(relation, permissionString);
-    permissions.put(relation, relationPermission);
-  }
+	Space space = resolveSpace(parts[0]);
+	if (space == null) {
+	    throw new InvalidPermissionStringException("unknown space '"
+		    + parts[0] + "'", permissionString);
+	}
+	Spatial spatial = resolveSpatial(space, parts[1]);
+
+	resolveAndAddRelationPermission(permissions, Relation.TOUCHES, parts[2]);
+
+	if (parts.length > 3) {
+	    String[] perms = parts[3].split("/");
+	    switch (perms.length) {
+	    case 2:
+		resolveAndAddRelationPermission(permissions, Relation.OUTSIDE,
+			perms[1]);
+	    case 1:
+		resolveAndAddRelationPermission(permissions, Relation.INSIDE,
+			perms[0]);
+		break;
+	    default:
+		throw new InvalidPermissionStringException(
+			"invalid inside/outside permissions", permissionString);
+	    }
+	}
+
+	return new SpatialPermission(spatial,
+		spaceRelationProvider.getRelationProvider(space), permissions);
+    }
+
+    protected Space resolveSpace(String spaceString) {
+	return this.spaceResolver.resolveSpace(spaceString);
+    }
+
+    protected Spatial resolveSpatial(Space space, String spatialString) {
+	return this.spatialResolver.resolveSpatial(space, spatialString);
+    }
+
+    protected Permission resolveRelationPermission(Relation relation,
+	    String permissionString) {
+	return relationPermissionResolver.resolvePermission(permissionString);
+    }
+
+    protected void resolveAndAddRelationPermission(
+	    Map<Relation, Permission> permissions, Relation relation,
+	    String permissionString) {
+	Permission relationPermission = resolveRelationPermission(relation,
+		permissionString);
+	permissions.put(relation, relationPermission);
+    }
 }

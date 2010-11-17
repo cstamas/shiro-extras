@@ -8,5 +8,5 @@ package eu.flatwhite.shiro.spatial;
  */
 public interface SpatialResolver {
 
-  public Spatial resolveSpatial(Space space, String spatialString);
+    public Spatial resolveSpatial(Space space, String spatialString);
 }

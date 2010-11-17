@@ -8,9 +8,7 @@ import java.util.List;
 import eu.flatwhite.shiro.spatial.AbstractSpatial;
 import eu.flatwhite.shiro.spatial.Space;
 
-public class Node
-    extends AbstractSpatial
-{
+public class Node extends AbstractSpatial {
     private static final long serialVersionUID = 5730382523050068642L;
 
     private static final String PATH_SEPARATOR = "/";
@@ -20,109 +18,95 @@ public class Node
     private final String pathElem;
 
     // special constructor for ROOT
-    protected Node( final Space space )
-    {
-        super( space );
+    protected Node(final Space space) {
+	super(space);
 
-        this.parent = null;
-        this.pathElem = "";
+	this.parent = null;
+	this.pathElem = "";
     }
 
-    public Node( final Node parent, final String pathElem )
-    {
-        super( parent.getSpace() );
+    public Node(final Node parent, final String pathElem) {
+	super(parent.getSpace());
 
-        assert parent != null : "Parent cannot be null!";
-        assert pathElem != null && pathElem.trim().length() > 0 : "Path element may not be empty!";
+	assert parent != null : "Parent cannot be null!";
+	assert pathElem != null && pathElem.trim().length() > 0 : "Path element may not be empty!";
 
-        this.parent = parent;
-        this.pathElem = pathElem;
+	this.parent = parent;
+	this.pathElem = pathElem;
     }
 
-    public Node getParent()
-    {
-        return parent;
+    public Node getParent() {
+	return parent;
     }
 
-    public String getPathElem()
-    {
-        return pathElem;
+    public String getPathElem() {
+	return pathElem;
     }
 
-    public List<Node> getPath()
-    {
-        Node curNode = this;
+    public List<Node> getPath() {
+	Node curNode = this;
 
-        ArrayList<Node> path = new ArrayList<Node>();
+	ArrayList<Node> path = new ArrayList<Node>();
 
-        while ( curNode != null )
-        {
-            path.add( curNode );
+	while (curNode != null) {
+	    path.add(curNode);
 
-            curNode = curNode.getParent();
-        }
+	    curNode = curNode.getParent();
+	}
 
-        Collections.reverse( path );
+	Collections.reverse(path);
 
-        return Collections.unmodifiableList( path );
+	return Collections.unmodifiableList(path);
     }
 
-    public String getPathString()
-    {
-        List<Node> path = getPath();
+    public String getPathString() {
+	List<Node> path = getPath();
 
-        Iterator<Node> pathIter = path.iterator();
+	Iterator<Node> pathIter = path.iterator();
 
-        // consume root to make assembly simpler
-        pathIter.next();
+	// consume root to make assembly simpler
+	pathIter.next();
 
-        StringBuilder sb = new StringBuilder( PATH_SEPARATOR );
+	StringBuilder sb = new StringBuilder(PATH_SEPARATOR);
 
-        if ( pathIter.hasNext() )
-        {
-            sb.append( pathIter.next().getPathElem() );
-        }
+	if (pathIter.hasNext()) {
+	    sb.append(pathIter.next().getPathElem());
+	}
 
-        for ( ; pathIter.hasNext(); )
-        {
-            sb.append( PATH_SEPARATOR ).append( pathIter.next().getPathElem() );
-        }
+	for (; pathIter.hasNext();) {
+	    sb.append(PATH_SEPARATOR).append(pathIter.next().getPathElem());
+	}
 
-        return sb.toString();
+	return sb.toString();
     }
 
     // ==
 
-    public static Node parseString( final NodeSpace space, final String string )
-    {
-        assert string != null : "String to parse cannot be null!";
+    public static Node parseString(final NodeSpace space, final String string) {
+	assert string != null : "String to parse cannot be null!";
 
-        String pathString = string;
+	String pathString = string;
 
-        while ( pathString.startsWith( PATH_SEPARATOR ) )
-        {
-            pathString = pathString.substring( PATH_SEPARATOR.length() );
-        }
+	while (pathString.startsWith(PATH_SEPARATOR)) {
+	    pathString = pathString.substring(PATH_SEPARATOR.length());
+	}
 
-        String[] pathElems = pathString.split( PATH_SEPARATOR );
+	String[] pathElems = pathString.split(PATH_SEPARATOR);
 
-        Node curNode = space.getOrigin();
+	Node curNode = space.getOrigin();
 
-        for ( String elem : pathElems )
-        {
-            if ( elem.length() > 0 )
-            {
-                curNode = new Node( curNode, elem );
-            }
-        }
+	for (String elem : pathElems) {
+	    if (elem.length() > 0) {
+		curNode = new Node(curNode, elem);
+	    }
+	}
 
-        return curNode;
+	return curNode;
     }
 
     // ==
 
-    public String toString()
-    {
-        return getPathString();
+    public String toString() {
+	return getPathString();
     }
 }

@@ -8,14 +8,11 @@ import eu.flatwhite.shiro.spatial.Space;
  * 
  * @author cstamas
  */
-public class Person
-    extends AbstractSpatial
-{
+public class Person extends AbstractSpatial {
     private static final long serialVersionUID = 6259091445857892015L;
 
-    public enum Gender
-    {
-        FEMALE, MALE
+    public enum Gender {
+	FEMALE, MALE
     };
 
     private final String name;
@@ -24,29 +21,26 @@ public class Person
 
     private final int badgeNo;
 
-    public Person( final Space space, final String name, final Gender gender, final int badgeNo )
-    {
-        super( space );
+    public Person(final Space space, final String name, final Gender gender,
+	    final int badgeNo) {
+	super(space);
 
-        this.name = name;
+	this.name = name;
 
-        this.gender = gender;
+	this.gender = gender;
 
-        this.badgeNo = badgeNo;
+	this.badgeNo = badgeNo;
     }
 
-    public String getName()
-    {
-        return name;
+    public String getName() {
+	return name;
     }
 
-    public Gender getGender()
-    {
-        return gender;
+    public Gender getGender() {
+	return gender;
     }
 
-    public int getBadgeNo()
-    {
-        return badgeNo;
+    public int getBadgeNo() {
+	return badgeNo;
     }
 }

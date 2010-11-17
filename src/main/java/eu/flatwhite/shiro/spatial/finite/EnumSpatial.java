@@ -10,19 +10,19 @@ import eu.flatwhite.shiro.spatial.Space;
  */
 public class EnumSpatial extends AbstractSpatial {
 
-  private final int ordinal;
+    private final int ordinal;
 
-  public EnumSpatial(Space space, Enum<?> e) {
-    super(space);
-    this.ordinal = e.ordinal();
-  }
+    public EnumSpatial(Space space, Enum<?> e) {
+	super(space);
+	this.ordinal = e.ordinal();
+    }
 
-  public EnumSpatial(Space space, int ordinal) {
-    super(space);
-    this.ordinal = ordinal;
-  }
+    public EnumSpatial(Space space, int ordinal) {
+	super(space);
+	this.ordinal = ordinal;
+    }
 
-  public int getOrdinal() {
-    return ordinal;
-  }
+    public int getOrdinal() {
+	return ordinal;
+    }
 }
