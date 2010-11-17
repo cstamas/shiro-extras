@@ -18,8 +18,8 @@ public final class MapSpatialResolver implements SpatialResolver {
   }
 
   @Override
-  public Spatial parseSpatial(Space space, String spatialString) {
-    return spaceToResolver.get(space).parseSpatial(space, spatialString);
+  public Spatial resolveSpatial(Space space, String spatialString) {
+    return spaceToResolver.get(space).resolveSpatial(space, spatialString);
   }
 
   public final static class Builder {

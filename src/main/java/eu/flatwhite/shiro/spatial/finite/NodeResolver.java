@@ -12,7 +12,7 @@ import eu.flatwhite.shiro.spatial.SpatialResolver;
 public class NodeResolver implements SpatialResolver {
 
   @Override
-  public Spatial parseSpatial(Space space, String spatialString) {
+  public Spatial resolveSpatial(Space space, String spatialString) {
     return Node.parseString((NodeSpace) space, spatialString);
   }
 

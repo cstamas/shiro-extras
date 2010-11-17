@@ -15,7 +15,7 @@ import eu.flatwhite.shiro.spatial.SpatialResolver;
 public class PointResolver implements SpatialResolver {
 
   @Override
-  public Spatial parseSpatial(Space space, String spatialString) {
+  public Spatial resolveSpatial(Space space, String spatialString) {
     String[] points = spatialString.split(",");
     EuclideanSpace es = (EuclideanSpace)space;
     if(es.getDimensions() != points.length) throw new InvalidPermissionStringException("invalid number of points", spatialString);

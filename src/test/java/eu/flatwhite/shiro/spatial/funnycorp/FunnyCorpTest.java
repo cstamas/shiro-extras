@@ -9,6 +9,7 @@ import junit.framework.TestCase;
 
 import org.apache.shiro.authz.Permission;
 import org.apache.shiro.authz.permission.InvalidPermissionStringException;
+import org.apache.shiro.authz.permission.WildcardPermission;
 
 import eu.flatwhite.shiro.spatial.MapSpaceRelationProvider;
 import eu.flatwhite.shiro.spatial.MapSpaceResolver;
@@ -24,6 +25,7 @@ import eu.flatwhite.shiro.spatial.SpatialPermissionResolver;
 import eu.flatwhite.shiro.spatial.SpatialResolver;
 import eu.flatwhite.shiro.spatial.SphereRelationProvider;
 import eu.flatwhite.shiro.spatial.finite.EnumSpatial;
+import eu.flatwhite.shiro.spatial.finite.EnumSpatialResiolver;
 import eu.flatwhite.shiro.spatial.funnycorp.Person.Gender;
 import eu.flatwhite.shiro.spatial.inifinite.Point;
 import eu.flatwhite.shiro.spatial.inifinite.PointResolver;
@@ -67,7 +69,7 @@ public class FunnyCorpTest extends TestCase {
     // girls may have coffee
     // gender space is finite space, so SamePointRelation provider does it
     // the important thing is the "space" in which we place that template person
-    String coffePermission = "coffee";
+    Permission coffePermission = new WildcardPermission("coffee");
 
     SpatialPermission coffeSpatialPermission = new SpatialPermission(new EnumSpatial(genderSpace, Gender.FEMALE), new SamePointRelationProvider(), coffePermission);
 
@@ -80,7 +82,7 @@ public class FunnyCorpTest extends TestCase {
 
     // Rule 2 - all the boys may have a coke
     // gender space is finite space, so SamePointRelation provider does it
-    String cokePermission = "coke";
+    Permission cokePermission = new WildcardPermission("coke");
 
     SpatialPermission cokeSpatialPermission = new SpatialPermission(new EnumSpatial(genderSpace, Gender.MALE), new SamePointRelationProvider(), cokePermission);
 
@@ -94,9 +96,9 @@ public class FunnyCorpTest extends TestCase {
     // Rule 3 - all the "merited" employees (having badgeNo less or equal 10) may have a beer
     // Merit space is non-finite space, and the "merit threshold" is defined as "10 or less", so we
     // need to do it like this:
-    String beerPermission = "beer";
+    Permission beerPermission = new WildcardPermission("beer");
 
-    HashMap<Relation, String> permissions = new HashMap<Relation, String>();
+    HashMap<Relation, Permission> permissions = new HashMap<Relation, Permission>();
     permissions.put(Relation.TOUCHES, beerPermission);
     permissions.put(Relation.INSIDE, beerPermission);
 
@@ -127,7 +129,7 @@ public class FunnyCorpTest extends TestCase {
       }
 
       @Override
-      public Spatial parseSpatial(Space space, String spatialString) {
+      public Spatial resolveSpatial(Space space, String spatialString) {
         for(Person p : people) {
           if(spatialString.equalsIgnoreCase(p.getName())) return p;
         }
@@ -136,13 +138,8 @@ public class FunnyCorpTest extends TestCase {
     };
 
     final PersonGenderSpace genderSpace = new PersonGenderSpace();
-    SpatialResolver genderResolver = new SpatialResolver() {
-      @Override
-      public Spatial parseSpatial(Space space, String spatialString) {
-        return new EnumSpatial(genderSpace, Gender.valueOf(spatialString.toUpperCase()));
-      }
-    };
-    
+    SpatialResolver genderResolver = new EnumSpatialResiolver(Gender.class);
+
     PersonMeritSpace meritSpace = new PersonMeritSpace();
 
     SpaceResolver spaceResolver = MapSpaceResolver.Builder.newSpaceMap().addSpace("person", personSpace).addSpace("gender", genderSpace).addSpace("merit", meritSpace).build();
@@ -185,7 +182,7 @@ public class FunnyCorpTest extends TestCase {
     Assert.assertEquals(false, beerSpatialPermission.implies(resolver.resolvePermission("person:Linda:beer")));
   }
 
-  protected void check(boolean impliesExpected, SpatialPermission sp, Person person, String vendingMachineContentPermission) {
+  protected void check(boolean impliesExpected, SpatialPermission sp, Person person, Permission vendingMachineContentPermission) {
     // for checks, we have to "teleport" (using Avatar) from one space to another the person being compared, to
     // obey the space where the rule's spatial is defined. Also, employees are in personSpace, that is actually not
     // a space, since there is no distance defined.

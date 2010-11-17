@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.shiro.authz.Permission;
-import org.apache.shiro.authz.permission.WildcardPermission;
 
 public class SpatialPermission
     implements Permission, Serializable
@@ -16,7 +15,7 @@ public class SpatialPermission
 
     private final RelationProvider relationProvider;
 
-    private final Map<Relation, String> permissions;
+    private final Map<Relation, Permission> permissions;
 
     private SpatialPermission( final Spatial spatial, final RelationProvider relationProvider )
     {
@@ -27,11 +26,11 @@ public class SpatialPermission
 
         this.relationProvider = relationProvider;
 
-        this.permissions = new HashMap<Relation, String>( Relation.values().length );
+        this.permissions = new HashMap<Relation, Permission>( Relation.values().length );
     }
 
     public SpatialPermission( final Spatial spatial, final RelationProvider relationProvider,
-                              final String permission )
+                              final Permission permission )
     {
         this( spatial, relationProvider );
 
@@ -41,7 +40,7 @@ public class SpatialPermission
     }
 
     public SpatialPermission( final Spatial spatial, final RelationProvider relationProvider,
-                              final Map<Relation, String> permissions )
+                              final Map<Relation, Permission> permissions )
     {
         this( spatial, relationProvider );
 
@@ -61,7 +60,7 @@ public class SpatialPermission
         return relationProvider;
     }
 
-    public Map<Relation, String> getPermissions()
+    public Map<Relation, Permission> getPermissions()
     {
         return permissions;
     }
@@ -99,13 +98,7 @@ public class SpatialPermission
     
     protected Permission getPermission( Spatial spatial, Relation relation )
     {
-        String perm = getPermissions().get(relation);
-        if(perm == null || perm.isEmpty()) return null;
-        return getPermission(spatial, relation, perm);
+       return getPermissions().get(relation);
     }
-    
-    protected Permission getPermission( Spatial spatial, Relation relation, String perm )
-    {
-       return new WildcardPermission(perm);
-    }
+
 }

@@ -21,7 +21,7 @@ public class EnumSpatialResiolver implements SpatialResolver {
   }
 
   @Override
-  public Spatial parseSpatial(Space space, String spatialString) {
+  public Spatial resolveSpatial(Space space, String spatialString) {
     for(Enum<?> e : enumeration.getEnumConstants()) {
       if(e.toString().equalsIgnoreCase(spatialString)) {
         return new EnumSpatial(space, e);

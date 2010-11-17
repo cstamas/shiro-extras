@@ -14,7 +14,7 @@ public class PointResolverTest extends TestCase {
   public void testResolve1D() {
     EuclideanSpace space = new EuclideanSpace(1);
     PointResolver pointResolver = new PointResolver();
-    Spatial point = pointResolver.parseSpatial(space, "1.0");
+    Spatial point = pointResolver.resolveSpatial(space, "1.0");
     assertEquals(space, point.getSpace());
     assertEquals(1.0, ((Point)point).get(0));
   }
@@ -22,7 +22,7 @@ public class PointResolverTest extends TestCase {
   public void testResolve2D() {
     EuclideanSpace space = new EuclideanSpace(2);
     PointResolver pointResolver = new PointResolver();
-    Spatial point = pointResolver.parseSpatial(space, "1.0,2.0");
+    Spatial point = pointResolver.resolveSpatial(space, "1.0,2.0");
     assertEquals(space, point.getSpace());
     assertEquals(1.0, ((Point)point).get(0));
     assertEquals(2.0, ((Point)point).get(1));
@@ -31,7 +31,7 @@ public class PointResolverTest extends TestCase {
   public void testResolve3D() {
     EuclideanSpace space = new EuclideanSpace(3);
     PointResolver pointResolver = new PointResolver();
-    Spatial point = pointResolver.parseSpatial(space, "1.0,2.0,3.0");
+    Spatial point = pointResolver.resolveSpatial(space, "1.0,2.0,3.0");
     assertEquals(space, point.getSpace());
     assertEquals(1.0, ((Point)point).get(0));
     assertEquals(2.0, ((Point)point).get(1));
@@ -42,7 +42,7 @@ public class PointResolverTest extends TestCase {
     String invalidString = "1.0,NotANumber";
     PointResolver pointResolver = new PointResolver();
     try {
-      pointResolver.parseSpatial(new EuclideanSpace(2), invalidString);
+      pointResolver.resolveSpatial(new EuclideanSpace(2), invalidString);
       fail("Expected exception");
     } catch(InvalidPermissionStringException e) {
       assertEquals(invalidString, e.getPermissionString());
