@@ -5,16 +5,66 @@ import java.util.Arrays;
 import eu.flatwhite.shiro.spatial.AbstractSpace;
 import eu.flatwhite.shiro.spatial.Spatial;
 
+/**
+ * An n-dimensional (where n > 0) Euclidean space. Common instances of this
+ * class would represent 1, 2 or a 3-dimensional space, but this class supports
+ * any number of dimensions.
+ * <p>
+ * This implementation also supports projecting points from other Euclidean
+ * spaces of different dimensions. For example a {@code Point} in a
+ * 3-dimensional space can be projected to a {@code Point} in a 2-dimensional
+ * space (X,Y,Z -&gt; X,Y). When points are projected from lesser-dimensional
+ * spaces, the additional coordinates are set to this space's origin (ie: (X,Y
+ * -&gt; X,Y,O<sub>Z</sub>, where O<sub>Z</sub> is this origin's Z coordinate).
+ * <p>
+ * <em>Example uses</em>
+ * <ul>
+ * <li>1-dimensional space: grant the 'no-fee' permission when a person's
+ * account balance is outside (greater than) 1000.</li>
+ * <li>2 or 3-dimensional space: a game where things inside 'cities' are granted
+ * the 'heal' permission.</li>
+ * <li>5-dimensional space: use a student's grades (on dimension per class, eg:
+ * 5) to grant the 'play' permission when at least 3 grades are within a certain
+ * range.</li>
+ * </ul>
+ */
 public class EuclideanSpace extends AbstractSpace {
+
     private final Point origin;
 
     private final int dimensions;
 
+    /**
+     * Build a {@code EuclideanSpace} of {@code dimensions} dimensions and its
+     * origin at 0 in all dimensions.
+     * 
+     * @param dimensions
+     *            number of dimensions of the new space
+     */
     public EuclideanSpace(int dimensions) {
+	assert dimensions > 0 : "invalid number of dimensions";
+
 	this.dimensions = dimensions;
 	double[] o = new double[dimensions];
 	Arrays.fill(o, 0, dimensions, 0);
 	this.origin = new Point(this, o);
+    }
+
+    /**
+     * Build a {@code EuclideanSpace} centered on {@code origin}. The number of
+     * points of the origin determines the number of dimensions of the new
+     * space.
+     * 
+     * @param origin
+     *            the center point of the new space
+     */
+    public EuclideanSpace(double... origin) {
+	assert origin != null : "invalid origin";
+	assert origin.length > 0 : "invalid number of dimensions";
+
+	this.dimensions = origin.length;
+	// Point takes care of the copy.
+	this.origin = new Point(this, origin);
     }
 
     public Point getOrigin() {
@@ -22,6 +72,9 @@ public class EuclideanSpace extends AbstractSpace {
     }
 
     public boolean isContaining(Spatial spatial) {
+	// FIXME: Does a Euclidean space contain any point of the same
+	// dimensions or does it contain only points where
+	// (point.getSpace() == this) is true?
 	return spatial instanceof Point;
     }
 

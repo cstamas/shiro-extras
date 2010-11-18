@@ -4,34 +4,46 @@ import java.util.Arrays;
 
 import eu.flatwhite.shiro.spatial.AbstractSpatial;
 
+/**
+ * A point in a {@link EuclideanSpace}.
+ */
 public class Point extends AbstractSpatial {
-    private final double[] coords;
 
-    public Point(final EuclideanSpace space, final double... p) {
+    private final double[] coordinates;
+
+    private transient String toString;
+
+    public Point(final EuclideanSpace space, final double... coordinates) {
 	super(space);
-	assert p != null : "points cannot be null";
-	assert space.getDimensions() == p.length : "invalid number of dimensions";
-	this.coords = Arrays.copyOf(p, p.length);
+	assert coordinates != null : "coordinates cannot be null";
+	assert space.getDimensions() == coordinates.length : "invalid number of dimensions";
+	this.coordinates = Arrays.copyOf(coordinates, coordinates.length);
     }
 
     public double get(int i) {
-	return coords[i];
+	assert i >= 0 : "invalid coordinate index";
+	assert i < coordinates.length : "invalid coordinate index";
+
+	return coordinates[i];
     }
 
     public int getDimensions() {
-	return coords.length;
+	return coordinates.length;
     }
 
     // ==
 
     public String toString() {
-	StringBuilder sb = new StringBuilder();
-	sb.append('(');
-	for (int i = 0; i < coords.length; i++) {
-	    sb.append(coords[i]);
-	    if (i > 0)
-		sb.append(',');
+	if (toString == null) {
+	    StringBuilder sb = new StringBuilder();
+	    sb.append('(');
+	    for (int i = 0; i < coordinates.length; i++) {
+		sb.append(coordinates[i]);
+		if (i > 0)
+		    sb.append(',');
+	    }
+	    toString = sb.append(')').toString();
 	}
-	return sb.append(')').toString();
+	return toString;
     }
 }
