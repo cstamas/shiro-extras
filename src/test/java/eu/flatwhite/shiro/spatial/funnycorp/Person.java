@@ -24,11 +24,8 @@ public class Person extends AbstractSpatial {
     public Person(final Space space, final String name, final Gender gender,
 	    final int badgeNo) {
 	super(space);
-
 	this.name = name;
-
 	this.gender = gender;
-
 	this.badgeNo = badgeNo;
     }
 
