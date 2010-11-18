@@ -3,7 +3,7 @@ package eu.flatwhite.shiro.spatial;
 /**
  * Resolves a {@link Space} instance when parsing a permission string.
  * 
- * @see {@link SpatialPermissionResolver}
+ * @see SpatialPermissionResolver
  * @author philippe.laflamme@gmail.com
  */
 public interface SpaceResolver {
