@@ -156,8 +156,8 @@ public class Example1Test extends TestCase {
 	// check them: they should now all obey the manager decrete
 	Assert.assertEquals(0, checkAllPersonRules().size());
 
-	// fire some of them (this case is not okay, since fired will be removed
-	// from DB, hence, will not be able to login at all)
+	// fire some of them (this case is not really working, since fired will be removed
+	// from DB, hence, will not be able to login at all and will not be checked at all)
 	personDao.removeByUsername("toby");
 
 	// hire new employees
@@ -182,7 +182,7 @@ public class Example1Test extends TestCase {
 	}
 
 	// check them: they will fail, we modified 4 persons (2 added, 1
-	// promoted, 1 gender changed)
+	// promoted, 1 gender changed), roles are messed up
 	Assert.assertEquals(4, checkAllPersonRules().size());
 
 	// to "fix", we need to batch reapply manager decrete (to update person
