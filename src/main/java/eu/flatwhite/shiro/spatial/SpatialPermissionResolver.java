@@ -13,10 +13,7 @@ import eu.flatwhite.shiro.spatial.finite.NodeSpace;
 /**
  * Resolves permission strings with the following format
  * 
- * <pre>
- * {space}:{spatial}:{touches}[:{inside}/{outside}]
- * 
- * <pre>
+ * <pre>{space}:{spatial}:{touches}[:{inside}/{outside}]</pre>
  * where
  * <ul>
  *   <li><code>{space}</code> defines the space the permission belongs to</li>

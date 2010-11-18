@@ -8,7 +8,6 @@ import java.util.Map;
  * space names to space instances.
  * 
  * @author philippe.laflamme@gmail.com
- * 
  */
 public final class MapSpaceResolver implements SpaceResolver {
 
@@ -23,6 +22,11 @@ public final class MapSpaceResolver implements SpaceResolver {
 	return nameToSpace.get(spaceString);
     }
 
+    /**
+     * Builder pattern for {@code SpaceResolver}
+     * 
+     * @author philippe.laflamme@gmail.com
+     */
     public final static class Builder {
 	private final Map<String, Space> nameToSpace = new HashMap<String, Space>();
 

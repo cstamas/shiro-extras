@@ -4,11 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * An immutable implementation of {@code SpaceResolver} that keeps a map of
- * space names to space instances.
+ * An immutable implementation of {@code SpatialResolver} that keeps a map of
+ * {@code Space} instances to {@code SpatialResolver}.
  * 
  * @author philippe.laflamme@gmail.com
- * 
  */
 public final class MapSpatialResolver implements SpatialResolver {
 
@@ -23,6 +22,11 @@ public final class MapSpatialResolver implements SpatialResolver {
 	return spaceToResolver.get(space).resolveSpatial(space, spatialString);
     }
 
+    /**
+     * Builder pattern for {@code MapSpatialResolver}
+     * 
+     * @author philippe.laflamme@gmail.com
+     */
     public final static class Builder {
 	private final Map<Space, SpatialResolver> spaceToResolver = new HashMap<Space, SpatialResolver>();
 
