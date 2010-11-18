@@ -11,11 +11,11 @@ import eu.flatwhite.shiro.spatial.Spatial;
  * any number of dimensions.
  * <p>
  * This implementation also supports projecting points from other Euclidean
- * spaces of different dimensions. For example a {@code Point} in a
+ * spaces of different dimensions. For example a {@link Point} in a
  * 3-dimensional space can be projected to a {@code Point} in a 2-dimensional
  * space (X,Y,Z -&gt; X,Y). When points are projected from lesser-dimensional
  * spaces, the additional coordinates are set to this space's origin (ie: (X,Y
- * -&gt; X,Y,O<sub>Z</sub>, where O<sub>Z</sub> is this origin's Z coordinate).
+ * -&gt; X,Y,O<sub>Z</sub>), where O<sub>Z</sub> is this origin's Z coordinate).
  * <p>
  * <em>Example uses</em>
  * <ul>
@@ -23,7 +23,7 @@ import eu.flatwhite.shiro.spatial.Spatial;
  * account balance is outside (greater than) 1000.</li>
  * <li>2 or 3-dimensional space: a game where things inside 'cities' are granted
  * the 'heal' permission.</li>
- * <li>5-dimensional space: use a student's grades (on dimension per class, eg:
+ * <li>5-dimensional space: use a student's grades (one dimension per class, eg:
  * 5) to grant the 'play' permission when at least 3 grades are within a certain
  * range.</li>
  * </ul>
