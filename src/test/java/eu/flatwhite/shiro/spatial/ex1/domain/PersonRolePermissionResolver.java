@@ -11,21 +11,21 @@ import org.apache.shiro.authz.permission.WildcardPermission;
 
 public class PersonRolePermissionResolver implements RolePermissionResolver {
 
-    private final PersonRoleDao personRoleDao;
-
-    public PersonRolePermissionResolver(final PersonRoleDao personRoleDao) {
-	this.personRoleDao = personRoleDao;
-    }
+    private PersonRoleDao personRoleDao;
 
     public PersonRoleDao getPersonRoleDao() {
 	return personRoleDao;
+    }
+
+    public void setPersonRoleDao(PersonRoleDao personRoleDao) {
+	this.personRoleDao = personRoleDao;
     }
 
     @Override
     public Collection<Permission> resolvePermissionsInRole(String roleString) {
 	String[] permStrings = personRoleDao.resolveRole(roleString);
 
-	if (permStrings == null) {
+	if (permStrings == null || personRoleDao == null) {
 	    return Collections.emptySet();
 	}
 

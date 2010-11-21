@@ -4,7 +4,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * A simple person abstraction.
+ * A simple person abstraction. This class would be part of Shiro integrator's
+ * EIS implementation. This is "below" Shiro, and is just helping interfacing
+ * with it.
  * 
  * @author cstamas
  */

@@ -7,6 +7,7 @@ import org.apache.shiro.authz.Permission;
 import org.apache.shiro.authz.permission.InvalidPermissionStringException;
 import org.apache.shiro.authz.permission.PermissionResolver;
 import org.apache.shiro.authz.permission.PermissionResolverAware;
+import org.apache.shiro.authz.permission.WildcardPermission;
 import org.apache.shiro.authz.permission.WildcardPermissionResolver;
 
 import eu.flatwhite.shiro.spatial.finite.NodeSpace;
@@ -14,34 +15,43 @@ import eu.flatwhite.shiro.spatial.finite.NodeSpace;
 /**
  * Resolves permission strings with the following format
  * 
- * <pre>{space}:{spatial}:{touches}[:{inside}/{outside}]</pre>
+ * <pre>
+ * {space}:{spatial}:{touches}[:{inside}/{outside}]
+ * </pre>
+ * 
  * where
  * <ul>
- *   <li><code>{space}</code> defines the space the permission belongs to</li>
- *   <li><code>{spatial}</code> defines the spatial (point in the space) the permission belongs to</li>
- *   <li><code>{touches}</code> defines the permission for the {@link Relation#TOUCHES} relation</li>
- *   <li><code>{inside}/{outside}</code> defines the permission(s) for the {@link Relation#INSIDE} and {@link Relation#OUTSIDE} relation(s)</li>
+ * <li><code>{space}</code> defines the space the permission belongs to</li>
+ * <li><code>{spatial}</code> defines the spatial (point in the space) the
+ * permission belongs to</li>
+ * <li><code>{touches}</code> defines the permission for the
+ * {@link Relation#TOUCHES} relation</li>
+ * <li><code>{inside}/{outside}</code> defines the permission(s) for the
+ * {@link Relation#INSIDE} and {@link Relation#OUTSIDE} relation(s)</li>
  * </ul>
  * <p>
  * An example using a {@link NodeSpace}
  * <table>
  * <tr>
- *  <td>Permission String</td>
- *  <td>Meaning</td>
+ * <td>Permission String</td>
+ * <td>Meaning</td>
  * </tr>
  * <tr>
- *  <td><code>menu:/Edit/Delete:execute</code></td>
- *  <td>Allows 'execute' on /Edit/Delete</td>
+ * <td><code>menu:/Edit/Delete:execute</code></td>
+ * <td>Allows 'execute' on /Edit/Delete</td>
  * </tr>
  * <tr>
- *  <td><code>menu:/Edit/Delete:execute:view</code></td>
- *  <td>Allows 'execute' on /Edit/Delete and 'view' on nodes INSIDE</td>
+ * <td><code>menu:/Edit/Delete:execute:view</code></td>
+ * <td>Allows 'execute' on /Edit/Delete and 'view' on nodes INSIDE</td>
  * </tr>
  * </table>
  * <p>
- * This implementation relies on {@link SpaceResolver} to resolve the <code>{space}</code> part, a {@link SpatialResolver} to resolve the <code>{spatial}</code> 
- * part and a {@code PermissionResolver} to resolve the relation permissions (i.e.: {touches}, {inside} and {outside}). By default this {@code PermissionResolver} is a {@link WildcardPermissionResolver}.
- *
+ * This implementation relies on {@link SpaceResolver} to resolve the
+ * <code>{space}</code> part, a {@link SpatialResolver} to resolve the
+ * <code>{spatial}</code> part and a {@code PermissionResolver} to resolve the
+ * relation permissions (i.e.: {touches}, {inside} and {outside}). By default
+ * this {@code PermissionResolver} is a {@link WildcardPermissionResolver}.
+ * 
  * @author philippe.laflamme@gmail.com
  */
 public class SpatialPermissionResolver implements PermissionResolver,
@@ -89,9 +99,13 @@ public class SpatialPermissionResolver implements PermissionResolver,
 	String[] parts = permissionString.split(":");
 
 	if (parts.length < 3) {
-	    throw new InvalidPermissionStringException(
-		    "Expected at least 3 parts '{space}:{spatial}:{touches}'",
-		    permissionString);
+	    try {
+		return new WildcardPermission(permissionString);
+	    } catch (IllegalArgumentException e) {
+		throw new IllegalArgumentException(
+			"Expected at least 3 parts '{space}:{spatial}:{touches}': "
+				+ permissionString, e);
+	    }
 	}
 
 	Map<Relation, Permission> permissions = new HashMap<Relation, Permission>();

@@ -14,8 +14,6 @@ public class PersonRealm extends AuthorizingRealm {
 
     private PersonDao personDao;
 
-    private PersonRoleDao personRoleDao;
-
     public PersonRealm() {
 	setAuthenticationTokenClass(UsernamePasswordToken.class);
 	setCachingEnabled(false);
@@ -27,16 +25,6 @@ public class PersonRealm extends AuthorizingRealm {
 
     public void setPersonDao(PersonDao personDao) {
 	this.personDao = personDao;
-    }
-
-    public PersonRoleDao getPersonRoleDao() {
-	return personRoleDao;
-    }
-
-    public void setPersonRoleDao(PersonRoleDao personRoleDao) {
-	this.personRoleDao = personRoleDao;
-	setRolePermissionResolver(new PersonRolePermissionResolver(
-		personRoleDao));
     }
 
     @Override

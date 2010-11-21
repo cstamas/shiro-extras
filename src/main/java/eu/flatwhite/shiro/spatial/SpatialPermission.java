@@ -69,7 +69,7 @@ public class SpatialPermission implements Permission, Serializable {
 
 	SpatialPermission wp = (SpatialPermission) p;
 
-	Permission myPerm = getPermission(wp.getSpatial());
+	Permission myPerm = getPermissionFor(wp);
 
 	if (myPerm != null) {
 	    return myPerm.implies(wp.getPermission(getSpatial(),
@@ -77,6 +77,10 @@ public class SpatialPermission implements Permission, Serializable {
 	} else {
 	    return false;
 	}
+    }
+
+    public Permission getPermissionFor(SpatialPermission p) {
+	return getPermission(p.getSpatial());
     }
 
     // ==

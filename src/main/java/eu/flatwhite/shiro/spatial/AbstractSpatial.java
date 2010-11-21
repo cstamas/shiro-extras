@@ -7,7 +7,7 @@ public abstract class AbstractSpatial implements Spatial {
 
     public AbstractSpatial(final Space space) {
 	assert space != null : "Space cannot be null!";
-	assert space.isContaining(this);
+	assert space.isContaining(this) : "Cannot create spatial outside of this space!";
 
 	this.space = space;
     }
