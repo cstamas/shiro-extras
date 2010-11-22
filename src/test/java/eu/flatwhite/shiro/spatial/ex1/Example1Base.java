@@ -5,15 +5,13 @@ import java.util.Set;
 
 import junit.framework.Assert;
 import junit.framework.AssertionFailedError;
-import junit.framework.TestCase;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.UnauthorizedException;
-import org.apache.shiro.config.IniSecurityManagerFactory;
-import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.subject.Subject;
 
+import eu.flatwhite.shiro.spatial.AbstractShiroFullConfigTest;
 import eu.flatwhite.shiro.spatial.ex1.domain.Person;
 import eu.flatwhite.shiro.spatial.ex1.domain.Person.Gender;
 import eu.flatwhite.shiro.spatial.ex1.domain.PersonDao;
@@ -29,11 +27,7 @@ import eu.flatwhite.shiro.spatial.ex1.domain.VendingMachine;
  * @author cstamas
  * 
  */
-public abstract class Example1Base extends TestCase {
-
-    protected IniSecurityManagerFactory config;
-
-    protected SecurityManager securityManager;
+public abstract class Example1Base extends AbstractShiroFullConfigTest {
 
     protected PersonDao personDao;
 
@@ -44,21 +38,11 @@ public abstract class Example1Base extends TestCase {
     protected void setUp() throws Exception {
 	super.setUp();
 
-	config = new IniSecurityManagerFactory(getIniPath());
-
-	securityManager = config.getInstance();
-
-	SecurityUtils.setSecurityManager(securityManager);
-
 	personDao = (PersonDao) config.getBeans().get("personDao");
 
 	personRoleDao = (PersonRoleDao) config.getBeans().get("personRoleDao");
 
 	vendingMachine = new ProtectedVendingMachine(new SimpleVendingMachine());
-    }
-
-    protected void tearDown() throws Exception {
-	super.tearDown();
     }
 
     // Protected resources simulated with canI* methods
@@ -156,8 +140,6 @@ public abstract class Example1Base extends TestCase {
     }
 
     // Test preparation methods
-
-    protected abstract String getIniPath();
 
     protected abstract void applyManagerDecrete();
 
